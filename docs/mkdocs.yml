@@ -1,0 +1,3 @@
+site_name: Nomake docs
+theme:
+  name: 'rtd-dropdown'
