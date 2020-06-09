@@ -97,3 +97,22 @@ Dependencies not required.
 This is an optional parameter.
 
 Recomended use with [compiler-path](#compiler-path), [linker](#linker), [compiler](#compiler)  params.
+
+---
+
+## arch
+Use for select target architecture. Now support only x86 and x64.
+### Syntax
+
+```bash
+python setup.py arch=msvc
+python setup.py arch=clang
+```
+### Default value
+
+`x86` for x86 host system and `x64` for amd64.
+
+### Dependencies
+Dependencies not required.
+
+This is an optional parameter.
