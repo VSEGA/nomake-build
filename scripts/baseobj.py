@@ -3,6 +3,9 @@ from os import name
 
 
 class BaseObject(object):
+    '''
+    This class contains default values.
+    '''
 	# no rewritable
 	configs = dict()  # This list will store the configs
     configs["name"] = name # This is a system name. Example: "posix" or "nt"
