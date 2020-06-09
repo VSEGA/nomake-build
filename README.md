@@ -1,1 +1,1 @@
-Nomake-build - Nomake - tiny automatic build util.
+Nomake-build - tiny automatic build util.
