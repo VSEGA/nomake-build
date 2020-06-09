@@ -5,5 +5,6 @@
 	- [linker-path](compilerlink.md#linker-path).
 	- [linker](compilerlink.md#linker).
 	- [compiler](compilerlink.md#compiler).
+	- [arch](compilerlink.md#arch)
 - [Debug args](debug.md).
 	- [force-python3](debug.md#force-python3).
