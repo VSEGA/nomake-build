@@ -4,6 +4,9 @@ from compileobj import *
 from moduleobj import *
 
 def main(path, args):
+	'''
+	Main function
+	'''
 	mobj = CompileObject() # class contains all scripts functions
 	mobj.configs["pathroot"] = path # set program root path
 	mobj.initArgs(args) # Init program args

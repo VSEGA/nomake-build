@@ -6,7 +6,13 @@ from funcsobj import *
 
 # Base class
 class CheckObject(FuncsObject):
-    def checkPython(self): # check the python intrpretator version. Required a 2.7.x versions
+    '''
+    This class contains functions for init args and check requiments
+    '''
+    def checkPython(self): 
+        '''
+        Check the python intrpretator version. Required a 2.7.x versions.
+        '''
         vmajor = version_info[0] # version of Python interpreter: major,
         vminor = version_info[1] # minor
         if vmajor != 2 and self.configs["force-python3"] == "False": # if python 3.x.x
@@ -19,14 +25,20 @@ class CheckObject(FuncsObject):
             raise EnvironmentError("Python 2 is older version")
     # end of function
 `
-    def checkSystem(self): # Checks system compatibility
+    def checkSystem(self):
+        '''
+        Checks system compatibility.
+        '''
         if self.configs["name"] != "nt" or self.configs["name"] != "posix": # Check for system: 
                                                                             # windows, unix or another
             print("Your system (%s) is not supported now." % self.platform)
             raise EnvironmentError("System is not supported")
     # end of function
 
-    def initArgs(self, args):  # init the program arguments
+    def initArgs(self, args): 
+        '''
+        Init the program arguments.
+        '''
         name = ""  # parameter name
         value = ""  # parameter value
 

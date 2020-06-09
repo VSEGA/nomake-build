@@ -5,26 +5,35 @@ from os.path import normpath, join
 # Main class
 class CompileObject(CheckObject):
 
-	# compilation with g++
 	def gccCompile(self, inputs, outputs):
+		'''
+		Compilation program this g++.
+		'''
 		self.execute(self.configs["base_compile_command"]["gcc"]\
 			.format(path=self.configs["cxx-path"],output=outputs,input=inputs))
 	# end of function
 
-	# with msvc
 	def msvcCompile(self, inputs, outputs):
+		'''
+		Compilation program this msvc.
+		'''
 		self.execute(self.configs["base_compile_command"]["msvc"]\
 			.format(path=self.configs["cxx-path"],output=outputs,input=inputs, arch=self.configs["arch"]))
 	# end of function
 
-	# with clang
 	def clangCompile(self, inputs, outputs):
+		'''
+		Compilation program this clang.
+		'''
 		self.execute(self.configs["base_compile_command"]["clang"]\
 			.format(path=self.configs["cxx-path"],output=outputs,input=inputs))
 	# end of function
 
 	# select function to compile
 	def compile(self, module):
+		'''
+		Compile modules.
+		'''
 		path = self.configs["pathroot"] # program root path
 		objfrm = self.configs["obj-format"] # obkect format. Examples: ".obj"(on nt), ".o"(on unixs) 
 		try:
