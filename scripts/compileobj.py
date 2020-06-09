@@ -10,7 +10,7 @@ class CompileObject(CheckObject):
 		Compilation program this g++.
 		'''
 		self.execute(self.configs["base_compile_command"]["gcc"]\
-			.format(path=self.configs["cxx-path"],output=outputs,input=inputs))
+			.format(path=self.configs["cxx-path"],output=outputs,input=inputs, arch=self.configs["cpu-type"]))
 	# end of function
 
 	def msvcCompile(self, inputs, outputs):

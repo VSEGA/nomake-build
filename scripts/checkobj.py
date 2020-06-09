@@ -65,7 +65,8 @@ class CheckObject(FuncsObject):
 
             elif name == "arch": # target arch. Now support only x86 and amd64
                 self.configSetString("arch", value.lower(), ["x64", "x86"])
-            
+            elif name == "cpu-type":
+                self.configSetString("cpu-type", value.lower(), self.configs["cpu-types"])
             else: # unkown param
                 print("Unkown parameter ({n})".format(n=name))
                 raise EnvironmentError("Unkown Parameter")
