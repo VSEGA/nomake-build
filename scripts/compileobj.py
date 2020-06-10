@@ -1,6 +1,7 @@
 from checkobj import *
 from os import mkdir
 from os.path import normpath, join
+from universalfunctions.main import *
 
 # Main class
 class CompileObject(CheckObject):
@@ -62,12 +63,14 @@ class CompileObject(CheckObject):
 		if self.configs["cxx"] == "msvc": # compile-function for msvc
 			for i in module.inputs:
 				msvcCompile(normpath(join(path, "src", i)), normpath(join(path, "src", i, ))+objfrm)
+			self.msLink(toString(module.inputs), module.output)
 
 		elif self.configs["cxx"] == "clang": # for clang
 			for i in module.inputs:
 				clangCompile(normpath(join(path, "src", i)), normpath(join(path, "src", i, ))+objfrm)
-		
-		else: 
-			for i in module.inputs: # for g++ 
+			self.ldLink(toString(module.inputs), module.output)
+		else: 								# for g++ 
+			for i in module.inputs: 
 				gccCompile(normpath(join(path, "src", i)), normpath(join(path, "src", i, ))+objfrm)
+			self.ldLink(toString(module.inputs), module.output)
 	# end of function
