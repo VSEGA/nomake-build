@@ -105,12 +105,12 @@ Use for select target architecture. Now support only x86 and x64.
 ### Syntax
 
 ```bash
-python setup.py arch=msvc
-python setup.py arch=clang
+python setup.py arch=32
+python setup.py arch=64
 ```
 ### Default value
 
-`x86` for x86 host system and `x64` for amd64.
+`32` for x86 host system and `64` for amd64.
 
 ### Dependencies
 Dependencies not required.
