@@ -6,14 +6,15 @@ class FuncsObject(BaseObject):
     '''
     Contains a functions used other classes
     '''
+
 	def getSysArch(self):
         '''
-        Get system arch by enviroment varisables.
+        Get system arch by enviroment variables.
         '''
         if ("64" in os.getenv('PROCESSOR_ARCHITECTURE')) or ("64" in os.getenv('PROCESSOR_ARCHITEW6432')): 
-            self.configs["arch"] = "X64" # x86-64
+            self.configs["arch"] = "64" # x86-64
         else:
-            self.configs["arch"] = "X86"  # only x86
+            self.configs["arch"] = "32"  # only x86
     # end of function
 
     def execute(self, command): 
