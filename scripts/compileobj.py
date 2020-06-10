@@ -31,8 +31,24 @@ class CompileObject(CheckObject):
 				, cputype=self.configs["cpu-type"], arch=self.configs["arch"]))
 	# end of function
 
+	def ldCompile(self, inputs, outputs):
+		'''
+		Ld linking for g++ and clang.
+		'''
+		self.execute(self.configs["base_compile_command"]["ld"]\
+			.format(path=self.configs["linker-path"],output=outputs,inputs=inputs)
+	# end of function
+
+	def ldCompile(self, inputs, outputs):
+		'''
+		Mslink linking for msvc.
+		'''
+		self.execute(self.configs["base_compile_command"]["mslink"]\
+			.format(path=self.configs["linker-path"],output=outputs,inputs=inputs)
+	# end of function
+
 	# select function to compile
-	def compile(self, module):
+	def compile_link(self, module):
 		'''
 		Compile modules.
 		'''

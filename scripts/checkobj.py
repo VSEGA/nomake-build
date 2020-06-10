@@ -65,8 +65,10 @@ class CheckObject(FuncsObject):
 
             elif name == "arch": # target arch. Now support only x86 and amd64
                 self.configSetString("arch", value.lower(), ["x64", "x86"])
+
             elif name == "cpu-type":
                 self.configSetString("cpu-type", value.lower(), self.configs["cpu-types"])
+
             else: # unkown param
                 print("Unkown parameter ({n})".format(n=name))
                 raise EnvironmentError("Unkown Parameter")
@@ -101,8 +103,8 @@ class CheckObject(FuncsObject):
         if self.configs["linker-path"] == "nopath": # if path isn't set
             if self.configs["linker"] == "mslink": # for msvc
                 self.configs["linker-path"] == "link" # name of main linker file
-            else:                                   # for g++ and clang(I don't know whats linker use clang)
-                self.configs["linker-path"] == "ld"
+            else:                                   # for g++ and clang
+                self.configs["linker-path"] == "clang-ld" if self.configs["cxx"]=="clang" else "ld"
     # end of function
 
     def checkSup(self) : # checks requiemnts

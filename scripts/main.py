@@ -12,4 +12,4 @@ def main(path, args):
 	mobj.initArgs(args) # Init program args
 	mobj.checkSup() # Check program requiemnts
 	module = Module(["main.cpp"], "main.exe") # create module object
-	mobj.compile() # compile object
+	mobj.compile_link(module) # compile object
