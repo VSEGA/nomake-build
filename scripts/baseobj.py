@@ -14,12 +14,12 @@ class BaseObject(object):
     configs["base_compile_command"] = dict() # schemes for compile files with any support compiler
     configs["base_compile_command"]["gcc"] = "{path} -Wall -c -std=c++11 -x none \
                                             -m{arch} -march={cputype} -o {output} {input}"
-    configs["base_compile_command"]["msvc"] = "{path} {input} /EHsc /nologo /O2 \
+    configs["base_compile_command"]["msvc"] = "{path} {input} /EHsc /O2 \
     											/utf-8 /Wall /c /MACHINE:{arch} /Fo {output}"
     configs["base_compile_command"]["clang"] = "{path} -Wall -c -std=c++11 -x none \
                                             -m{arch} -march={cputype} -o {output} {input}"
     configs["base_compile_command"]["ld"] = "{path} {inputs} -o {output}"
-    configs["base_compile_command"]["mslink"] = "{path} {inputs} /o {output}"
+    configs["base_compile_command"]["mslink"] = "{path} {inputs} /nologo /out:{output}"
     configs["cpu-types"] = ["native", "i386", "i486", "i586", "pentium"\
                     , "lakemont", "pentium-mmx", "pentiumpro", "i686", "pentium2", "pentium3", "pentium3m"\
                     , "pentium-m", "pentium4", "pentium4m", "presscott", "nocona", "core2", "nehalem"\
