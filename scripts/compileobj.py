@@ -31,7 +31,7 @@ class CompileObject(CheckObject):
 				, cputype=self.configs["cpu-type"], arch=self.configs["arch"]))
 	# end of function
 
-	def ldCompile(self, inputs, outputs):
+	def ldLink(self, inputs, outputs):
 		'''
 		Ld linking for g++ and clang.
 		'''
@@ -39,7 +39,7 @@ class CompileObject(CheckObject):
 			.format(path=self.configs["linker-path"],output=outputs,inputs=inputs)
 	# end of function
 
-	def ldCompile(self, inputs, outputs):
+	def msLink(self, inputs, outputs):
 		'''
 		Mslink linking for msvc.
 		'''
