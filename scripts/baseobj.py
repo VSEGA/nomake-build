@@ -10,9 +10,10 @@ class BaseObject(object):
 	configs = dict()  # This list will store the configs
     configs["name"] = name # This is a system name. Example: "posix" or "nt"
     configs["platform"] = platform # This is a another system name. Example: "linux" or "win32"
-    configs["obj-format"] = ".o" # object file format
+    configs["obj-format"] = ".obj" if configs["name"]=="nt" else ".o" # object file format
     configs["base_compile_command"] = dict() # schemes for compile files with any support compiler
-    configs["base_compile_command"]["gcc"] = "{path} -Wall -c -march={arch} -o {output} {input}"
+    configs["base_compile_command"]["gcc"] = "{path} -Wall -c -std=c++11 -x none \
+                                            -m{arch} -march={cputype} -o {output} {input}"
     configs["base_compile_command"]["msvc"] = "{path} {input} /EHsc /nologo /O2 \
     											/utf-8 /Wall /c /MACHINE:{arch} /Fo {output}"
     configs["base_compile_command"]["clang"] = "{path} -o {output} {input}"
@@ -29,7 +30,7 @@ class BaseObject(object):
     # rewritable
     configs["cpu-type"] = "native" # Improved version of Intel Pentium 4 CPU 
                                    # with 64-bit extensions. Only for g++
-    configs["arch"] = "X86" # program arch
+    configs["arch"] = "32" # program arch
     configs["cxx"] = "sysdefault"  # default compiler. sysdefault - the default compiler, 
                                     #determined by the type of system.
     configs["linker"] = "cxx-default" # recomended compiler by system

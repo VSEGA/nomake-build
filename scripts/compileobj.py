@@ -7,23 +7,24 @@ class CompileObject(CheckObject):
 
 	def gccCompile(self, inputs, outputs):
 		'''
-		Compilation program this g++.
+		Compilation program with g++.
 		'''
 		self.execute(self.configs["base_compile_command"]["gcc"]\
-			.format(path=self.configs["cxx-path"],output=outputs,input=inputs, arch=self.configs["cpu-type"]))
+			.format(path=self.configs["cxx-path"],output=outputs,input=inputs\
+				, cputype=self.configs["cpu-type"], arch=self.configs["arch"]
 	# end of function
 
 	def msvcCompile(self, inputs, outputs):
 		'''
-		Compilation program this msvc.
+		Compilation program with msvc.
 		'''
 		self.execute(self.configs["base_compile_command"]["msvc"]\
-			.format(path=self.configs["cxx-path"],output=outputs,input=inputs, arch=self.configs["arch"]))
+			.format(path=self.configs["cxx-path"],output=outputs,input=inputs, arch="x" + self.configs["arch"]))
 	# end of function
 
 	def clangCompile(self, inputs, outputs):
 		'''
-		Compilation program this clang.
+		Compilation program with clang.
 		'''
 		self.execute(self.configs["base_compile_command"]["clang"]\
 			.format(path=self.configs["cxx-path"],output=outputs,input=inputs))
