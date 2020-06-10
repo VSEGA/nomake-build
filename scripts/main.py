@@ -1,9 +1,7 @@
-# This file will check compatibility and start compilation.
-
-from compileobj import *  
-from moduleobj import *
+# This file will check compatibility and start compilation.  
 from os.path import normpath, join
-
+import scripts.compileobj.CompileObject
+import scripts.moduleobj.Module
 
 def joinsrcpath(path, name):
 	return normpath(join(path, "src", name))

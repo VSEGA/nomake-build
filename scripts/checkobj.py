@@ -1,8 +1,8 @@
 # This file contains class check compatibility with system
 
 
-import sys.version_info
-from funcsobj import *
+import sys
+from scripts.funcsobj import *
 
 # Base class
 class CheckObject(FuncsObject):
@@ -13,8 +13,8 @@ class CheckObject(FuncsObject):
         '''
         Check the python intrpretator version. Required a 2.7.x versions.
         '''
-        vmajor = version_info[0] # version of Python interpreter: major,
-        vminor = version_info[1] # minor
+        vmajor = sys.version_info[0] # version of Python interpreter: major,
+        vminor = sys.version_info[1] # minor
         if vmajor != 2 and self.configs["force-python3"] == "False": # if python 3.x.x
                                                                      # and force-python3 flag is not enabled
             print ("Python 2.7.x is required")
@@ -24,7 +24,7 @@ class CheckObject(FuncsObject):
             print ("Python 2.7.x is required")
             raise EnvironmentError("Python 2 is older version")
     # end of function
-`
+
     def checkSystem(self):
         '''
         Checks system compatibility.
@@ -51,8 +51,8 @@ class CheckObject(FuncsObject):
             if name == "force-python3": # force use python3 param enable 
                 self.configSetBool(name, value.lower())
 
-			elif name == "compiler": # what kind compiler to use?
-				self.configSetString("cxx", value.lower(), ["gcc", "clang", "msvc", "sysdefault"]) 
+            elif name == "compiler": # what kind compiler to use ?
+                self.configSetString("cxx", value.lower(), ["gcc", "clang", "msvc", "sysdefault"]) 
                         
             elif name == "compiler-path": # path to compiler
                 self.isPathCorrectSet("cxx-path", value)

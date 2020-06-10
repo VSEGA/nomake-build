@@ -1,4 +1,4 @@
-from checkobj import *
+from scripts.checkobj import *
 from os import mkdir
 from os.path import normpath, join
 from universalfunctions.main import *
@@ -12,7 +12,7 @@ class CompileObject(CheckObject):
 		'''
 		self.execute(self.configs["base_compile_command"]["gcc"]\
 			.format(path=self.configs["cxx-path"],output=outputs,input=inputs\
-				, cputype=self.configs["cpu-type"], arch=self.configs["arch"])
+				, cputype=self.configs["cpu-type"], arch=self.configs["arch"]))
 	# end of function
 
 	def msvcCompile(self, inputs, outputs):
@@ -37,7 +37,7 @@ class CompileObject(CheckObject):
 		Ld linking for g++ and clang.
 		'''
 		self.execute(self.configs["base_compile_command"]["ld"]\
-			.format(path=self.configs["linker-path"],output=outputs,inputs=inputs)
+			.format(path=self.configs["linker-path"],output=outputs,inputs=inputs))
 	# end of function
 
 	def msLink(self, inputs, outputs):
@@ -45,7 +45,7 @@ class CompileObject(CheckObject):
 		Mslink linking for msvc.
 		'''
 		self.execute(self.configs["base_compile_command"]["mslink"]\
-			.format(path=self.configs["linker-path"],output=outputs,inputs=inputs)
+			.format(path=self.configs["linker-path"],output=outputs,inputs=inputs))
 	# end of function
 
 	# select function to compile
