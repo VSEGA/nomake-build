@@ -1,8 +1,7 @@
 from scripts.checkobj import *
 from os import mkdir
 from os.path import normpath, join
-from universalfunctions.main import *
-
+import scripts.universalfunctions.main as m
 # Main class
 class CompileObject(CheckObject):
 
@@ -47,7 +46,12 @@ class CompileObject(CheckObject):
 		self.execute(self.configs["base_compile_command"]["mslink"]\
 			.format(path=self.configs["linker-path"],output=outputs,inputs=inputs))
 	# end of function
-
+	def link(self, inputs, outputs):
+		if self.configs["linker"] == "mslink":
+			self.msLink(inputs, outputs)
+		else:
+			self.ldLink(inputs, outputs)
+	# end of function
 	# select function to compile
 	def compile_link(self, module):
 		'''
@@ -59,18 +63,21 @@ class CompileObject(CheckObject):
 			mkdir(normpath(join(path, "out"))) # create out folder
 		except:
 			pass
-
+		linker = list()
 		if self.configs["cxx"] == "msvc": # compile-function for msvc
 			for i in module.inputs:
-				msvcCompile(normpath(join(path, "src", i)), normpath(join(path, "src", i, ))+objfrm)
-			self.msLink(toString(module.inputs), module.output)
+				self.msvcCompile(normpath(join(path, "src", i)), normpath(join(path, "out", i))+objfrm)
+				linker.append(normpath(join(path, "out", i)) + objfrm)
+			self.link(m.toString(linker), module.output)
 
 		elif self.configs["cxx"] == "clang": # for clang
 			for i in module.inputs:
-				clangCompile(normpath(join(path, "src", i)), normpath(join(path, "src", i, ))+objfrm)
-			self.ldLink(toString(module.inputs), module.output)
+				self.clangCompile(normpath(join(path, "src", i)), normpath(join(path, "out", i))+objfrm)
+				linker.append(normpath(join(path, "out", i)) + objfrm)
+			self.link(m.toString(linker), module.output)
 		else: 								# for g++ 
 			for i in module.inputs: 
-				gccCompile(normpath(join(path, "src", i)), normpath(join(path, "src", i, ))+objfrm)
-			self.ldLink(toString(module.inputs), module.output)
+				self.gccCompile(normpath(join(path, "src", i)), normpath(join(path, "out", i))+objfrm)
+				linker.append(normpath(join(path, "out", i)) + objfrm)
+			self.link(m.toString(linker), module.output)
 	# end of function

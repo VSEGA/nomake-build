@@ -1,20 +1,20 @@
-from baseobj import *
+from scripts.baseobj import *
 from subprocess import check_call
-import os, os.path
+import platform, sys, os
 
 class FuncsObject(BaseObject):
     '''
     Contains a functions used other classes
     '''
 
-	def getSysArch(self):
+    def getSysArch(self):
         '''
         Get system arch by enviroment variables.
         '''
-        if ("64" in os.getenv('PROCESSOR_ARCHITECTURE')) or ("64" in os.getenv('PROCESSOR_ARCHITEW6432')): 
-            self.configs["arch"] = "64" # x86-64
+        if platform.machine()[3:] == "64":
+            self.configs["arch"] = "64" # amd64
         else:
-            self.configs["arch"] = "32"  # only x86
+            self.configs["arch"] = "32" # i386
     # end of function
 
     def execute(self, command): 
@@ -28,7 +28,7 @@ class FuncsObject(BaseObject):
         '''
         If path is correct add his to dict configs.
         '''
-        if path.exists(path):
+        if os.path.exists(path):
             self.configs[name] = path
         else:
             raise EnvironmentError("Non exists path - {p}".format(p=path))
@@ -50,8 +50,9 @@ class FuncsObject(BaseObject):
         '''
         Set string param to dictionary configs.
         '''
-		if value in values:   # if param value correct
-			self.configs[name] = value
-        else:  #value is incorrect
+
+        if value in values:
+            self.configs[name] = value # if param value correct
+        else: # value is incorrect
             raise EnvironmentError("Param(%s) value(%s)  is not correct" % (name, value))
     # end of function
