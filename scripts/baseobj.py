@@ -7,7 +7,7 @@ class BaseObject(object):
     This class contains default values.
     '''
 	# no rewritable
-	configs = dict()  # This list will store the configs
+    configs = dict() # This list will store the configs
     configs["name"] = name # This is a system name. Example: "posix" or "nt"
     configs["platform"] = platform # This is a another system name. Example: "linux" or "win32"
     configs["obj-format"] = ".obj" if configs["name"]=="nt" else ".o" # object file format
@@ -16,10 +16,9 @@ class BaseObject(object):
                                             -m{arch} -march={cputype} -o {output} {input}"
     configs["base_compile_command"]["msvc"] = "{path} {input} /EHsc /O2 \
     											/utf-8 /Wall /c /MACHINE:{arch} /Fo {output}"
-    configs["base_compile_command"]["clang"] = "{path} -Wall -c -std=c++11 -x none \
-                                            -m{arch} -march={cputype} -o {output} {input}"
+    configs["base_compile_command"]["clang"] = "{path} -Wall -c -m{arch} {input} -o {output}"
     configs["base_compile_command"]["ld"] = "{path} {inputs} -o {output}"
-    configs["base_compile_command"]["mslink"] = "{path} {inputs} /nologo /out:{output}"
+    configs["base_compile_command"]["mslink"] = "{path} {inputs} /libpath:C:\Program Files (x86)\Microsoft Visual Studio 8\VC\lib\amd64 /libpath:C:\Program Files (x86)\Microsoft Visual Studio 8\Common7\IDE\Lib\amd64 /nologo /out:{output}"
     configs["cpu-types"] = ["native", "i386", "i486", "i586", "pentium"\
                     , "lakemont", "pentium-mmx", "pentiumpro", "i686", "pentium2", "pentium3", "pentium3m"\
                     , "pentium-m", "pentium4", "pentium4m", "presscott", "nocona", "core2", "nehalem"\
@@ -31,8 +30,7 @@ class BaseObject(object):
                     , "c7", "samuel-2", "nehemiah", "esther", "eden-x2", "eden-x4", "nano", "nano-1000"\
                     , "nano-2000", "nano-3000", "nano-x2", "nano-x4", "geode"]
     # rewritable
-    configs["cpu-type"] = "native" # Improved version of Intel Pentium 4 CPU 
-                                   # with 64-bit extensions. Only for g++
+    configs["cpu-type"] = "native" # Cpu-type. Only for g++
     configs["arch"] = "32" # program arch
     configs["cxx"] = "sysdefault"  # default compiler. sysdefault - the default compiler, 
                                     #determined by the type of system.

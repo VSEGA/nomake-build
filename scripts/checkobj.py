@@ -20,7 +20,7 @@ class CheckObject(FuncsObject):
             print ("Python 2.7.x is required")
             raise EnvironmentError("Python 3 is not supported, use flag \
                                     force-python3=true to ignore this waring")
-        elif vminor != 7: # if python2 isn't 2.7
+        elif vminor < 7 and vmajor == 2: # if python2 isn't 2.7
             print ("Python 2.7.x is required")
             raise EnvironmentError("Python 2 is older version")
     # end of function
@@ -29,10 +29,11 @@ class CheckObject(FuncsObject):
         '''
         Checks system compatibility.
         '''
-        if self.configs["name"] != "nt" or self.configs["name"] != "posix": # Check for system: 
-                                                                            # windows, unix or another
-            print("Your system (%s) is not supported now." % self.platform)
-            raise EnvironmentError("System is not supported")
+        if self.configs["name"] != "nt": # Check for system: 
+                                        # windows, unix or another
+            if self.configs["name"] != "posix":
+                print("Your system (%s) is not supported now." % self.configs["name"])
+                raise EnvironmentError("System is not supported")
     # end of function
 
     def initArgs(self, args): 
@@ -58,13 +59,13 @@ class CheckObject(FuncsObject):
                 self.isPathCorrectSet("cxx-path", value)
             
             elif name == "linker": # what kind linker to use?
-                self.configSetString("cxx", value.lower(), ["ld", "mslink", "cxx-default"])
+                self.configSetString("linker", value.lower(), ["ld", "mslink", "cxx-default"])
             
             elif name == "linker-path": # path to linker
                 self.isPathCorrectSet("linker-path", value)
 
             elif name == "arch": # target arch. Now support only x86 and amd64
-                self.configSetString("arch", value.lower(), ["x64", "x86"])
+                self.configSetString("arch", value.lower(), ["64", "32"])
 
             elif name == "cpu-type":
                 self.configSetString("cpu-type", value.lower(), self.configs["cpu-types"])
