@@ -1,9 +1,10 @@
-# include <iostream>
+#include <iostream>
+#include <string>
 
 using namespace std;
 
-int main(int argc, char const *argv[])
+int main(int argc, const char *argv[])
 {
-	cout << "Hello World!";
+	cout << argv[1];
 	return 0;
 }
