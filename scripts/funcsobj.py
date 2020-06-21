@@ -1,49 +1,50 @@
 from scripts.baseobj import *
-from subprocess import check_call
-import platform, sys, os
+from platform import machine
+from os import getenv, walk
+from re import search
+from os.path import join
 
 class FuncsObject(BaseObject):
     '''
     Contains a functions used other classes
     '''
+    def ifprint(self, msg):
+        if self.configs["debug-prints"] == "true":
+            print(msg)
+    def getProgramFiles32(self):
+        return getenv("ProgramFiles")
+    def getVisualStudio(self):
+        for dirs in list(walk(self.getProgramFiles32())):
+            if search(r"Microsoft Visual Studio", dirs[0]) != None:
+                for i in dirs[1]:
+                    if search(r"VC", i) != None:
+                        return dirs[0]
+    def getVisualCpp(self):
+        return str(join(self.getVisualStudio(), "VC"))
 
-    def getSysArch(self):
+    def getSetSysArch(self):
         '''
-        Get system arch by enviroment variables.
+        Get and set to configs system arch by enviroment variables.
         '''
-        if platform.machine()[3:] == "64":
-            self.configs["arch"] = "64" # amd64
+        if machine()[3:] == "64":
+            self.configs["arch"] = "64"  # amd64
         else:
-            self.configs["arch"] = "32" # i386
+            self.configs["arch"] = "32"  # i386
     # end of function
 
-    def execute(self, command): 
-        '''
-        Execute command.
-        '''
-        check_call(command, stderr=sys.stderr, stdout=sys.stdout)
-    # end of function
-
-    def isPathCorrectSet(self, name, path):
+    def setPath(self, name, path):
         '''
         If path is correct add his to dict configs.
         '''
-        if os.path.exists(path):
-            self.configs[name] = path
-        else:
-            raise EnvironmentError("Non exists path - {p}".format(p=path))
+        self.configs[name] = path
     # end of function
 
     def configSetBool(self, name, value):
         '''
         Set bool param to dictionary configs.
         '''
-        if value == "true":  # if param true
-            self.configs[name] = True
-        elif value == "false": # false
-            self.configs[name] = False
-        else:
-            raise EnvironmentError("Param(%s) value(%s)  is not correct" % (name, value))
+        if value == "true" or value == "false":  # if param true or false
+            self.configs[name] = value
     # end of function
 
     def configSetString(self, name, value, values):
@@ -52,7 +53,7 @@ class FuncsObject(BaseObject):
         '''
 
         if value in values:
-            self.configs[name] = value # if param value correct
-        else: # value is incorrect
-            raise EnvironmentError("Param(%s) value(%s)  is not correct" % (name, value))
+            self.configs[name] = value  # if param value correct
+        else:  # value is incorrect
+            raise EnvironmentError(f"Param(name) value(value)  is not correct")
     # end of function

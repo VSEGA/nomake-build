@@ -1,20 +1,12 @@
+"""
+Start Build System Main Script.
+"""
+
 # Please do not modify this file.
-# It runs the main script.
-from os import getcwd # this function get path to script
+from os import getcwd  # this function get path to script
 import sys
 
-
-from scripts.main import main # program main script
+from scripts.main import main  # program main script
 
 if __name__ == '__main__':
-	main(getcwd(), sys.argv[1:])
-
-
-
-
-
-
-
-
-
-
+    main(getcwd(), sys.argv[1:])
