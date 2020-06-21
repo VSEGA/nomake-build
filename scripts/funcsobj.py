@@ -2,7 +2,7 @@ from scripts.baseobj import *
 from platform import machine
 from os import getenv, walk
 from re import search
-
+from os.path import join
 
 class FuncsObject(BaseObject):
     '''
@@ -15,10 +15,13 @@ class FuncsObject(BaseObject):
         return getenv("ProgramFiles")
     def getVisualStudio(self):
         for dirs in list(walk(self.getProgramFiles32())):
-            if search(r"Visual", dirs[0]) != None:
+            if search(r"Microsoft Visual Studio", dirs[0]) != None:
                 for i in dirs[1]:
                     if search(r"VC", i) != None:
                         return dirs[0]
+    def getVisualCpp(self):
+        return str(join(self.getVisualStudio(), "VC"))
+
     def getSetSysArch(self):
         '''
         Get and set to configs system arch by enviroment variables.

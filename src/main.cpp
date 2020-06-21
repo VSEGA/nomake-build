@@ -1,10 +1,6 @@
-#include <iostream>
-#include <string>
-
-using namespace std;
+#include "print.h"
 
 int main(int argc, const char *argv[])
 {
-	cout << argv[1];
-	return 0;
+	return print();
 }

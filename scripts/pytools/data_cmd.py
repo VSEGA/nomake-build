@@ -1,4 +1,4 @@
-from subprocess import check_call
+from subprocess import run
 from sys import stderr as err, stdout as out
 from os import devnull
 # this file contains random functions
@@ -6,21 +6,21 @@ from os import devnull
 # converts list to string
 
 
-def toString(inputs):
+def toString(inputs, division=" "):
     output = ""  # output variable
     for i in inputs:
-        output = output + i + " "
+        output = output + i + division
     return output
 
 
-def execute(debug, command):
+def execute(debug, command, env=None):
     '''
     Execute command.
     '''
-    if debug == "false":
-        with open(devnull, "wb") as null:
-            check_call(command, stderr=null, stdout=null)
+    if debug == "true":
+    	run(command, stderr=err, stdout=out, check=True, env=env)
 
     else:
-        check_call(command, stderr=err, stdout=out)
+        with open(devnull, "wb") as null:
+            run(command, stderr=null, stdout=null, check=True, env=env)
 # end of function

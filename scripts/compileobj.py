@@ -22,10 +22,7 @@ class CompileObject(CheckObject):
         """
         Compilation program with g++.
         """
-        self.ifprint(
-            "Compile file with g++ {inputs} -> {outputs}\n\nCompiler command: " + self.configs["base_compile_command"][
-                "gcc"].format(path=self.configs["cxx-path"], output=outputs, input=inputs,
-                              cputype=self.configs["cpu-type"], arch=self.configs["arch"]))
+        self.ifprint("Compile file with g++ {inputs} -> {outputs}")
         execute(self.configs["debug"], self.configs["base_compile_command"]["gcc"]
                 .format(path=self.configs["cxx-path"], output=outputs, input=inputs, cputype=self.configs["cpu-type"],
                         arch=self.configs["arch"]))
@@ -34,23 +31,16 @@ class CompileObject(CheckObject):
         """
         Compilation program with msvc.
         """
-        self.ifprint(
-            f"Compile file with g++ {inputs} -> {outputs}\n\nCompiler command: " + self.configs["base_compile_command"][
-                "msvc"]
-            .format(path=self.configs["cxx-path"], output=outputs, input=inputs, arch="x" + self.configs["arch"]))
         self.ifprint(f"Compile file with msvc {inputs} -> {outputs}")
         execute(self.configs["debug"], self.configs["base_compile_command"]["msvc"]
-                .format(path=self.configs["cxx-path"], output=outputs, input=inputs, arch="x" + self.configs["arch"]))
+                .format(path=self.configs["cxx-path"], output=outputs,
+                	input=inputs))
 
     def clangCompile(self, inputs, outputs):
         """
         Compilation program with clang.
         """
-        self.ifprint(f"Compile file with g++ {inputs} -> {outputs}\n\nCompiler command: " + self.configs["debug"])
-        self.ifprint(self.configs["base_compile_command"]["clang"].format(path=self.configs["cxx-path"],
-                                                                          output=outputs, input=inputs,
-                                                                          cputype=self.configs["cpu-type"],
-                                                                          arch=self.configs["arch"]))
+        self.ifprint(f"Compile file with g++ {inputs} -> {outputs}")
         execute(self.configs["debug"], self.configs["base_compile_command"]["clang"]
                 .format(path=self.configs["cxx-path"], output=outputs, input=inputs, cputype=self.configs["cpu-type"],
                         arch=self.configs["arch"]))
@@ -102,8 +92,8 @@ class CompileObject(CheckObject):
         path = self.configs["pathroot"]  # program root path
         # object format. Examples: ".obj"(on nt), ".o"(on unixs)
         objfrm = self.configs["obj-format"]
-        outfold = join(path, "out")
-        src = join(path, "src")
+        outfold = join(path, self.configs["out-folder"])
+        src = join(path, self.configs["src-folder"])
 
         for _current_dir, _dirs, files in walk(outfold):
             for f in files:
