@@ -1,16 +1,20 @@
 """
 This file will check compatibility and start compilation.
 """
-from scripts.compileobj import *
-from scripts.moduleobj import *
+from typing import List
+from scripts.compileobj import CompileObject
+from scripts.moduleobj import Module
 
 
-def main(path, args):
+def main(path: str, args: List[str]) -> None:
     """
-    Main functions
+    Main function.
+    :param path: Program root path.
+    :param args: Args to prog without script name.
     """
-    mobj = CompileObject()  # class contains all scripts functions
-    mobj.configs["pathroot"] = path  # set program root path
-    mobj.initArgs(args)  # Init program args
-    module = Module(["print.cpp", "main.cpp"], "main.exe")  # create module object
-    mobj.compile_link(module)  # compile object
+    try:
+        mobj = CompileObject(args, path)  # class contains all scripts functions
+        module = Module(["print.cpp", "main.cpp"], "main.exe")  # create module object
+        mobj.compile_link(module)  # compile object
+    except BaseException:
+        pass
