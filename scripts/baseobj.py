@@ -1,52 +1,86 @@
+"""
+Contains BaseObject class need for compileobj.
+"""
+from re import search
 from sys import platform
+from typing import List
 
 
 class BaseObject:
-	'''
-	This class contains default values in dict configs.
-	'''
-	# no rewritable
-	configs = dict()  # This list will store the configs
-	configs["name"] = platform  # This is a system name. Example: "linux" or "win32"
-	configs["out-folder"] = "out"
-	configs["src-folder"] = "src"
-	# object file format
-	configs["obj-format"] = ".obj" if configs["name"] == "win32" else ".o"
-	# schemes for compile files with any support compiler
-	configs["base_compile_command"] = dict()
-	configs["base_compile_command"][
-		"gcc"] = "{path} -Wall -Wextra -Werror -c -std=c++11 -lstdc++ -x none -m{arch} \
-		-march={cputype} -o {output} {input}"
-	configs["base_compile_command"]["msvc"] = "{path} {input} /EHsc /nologo /O2 /Wall /c /Fo{output}"
-	configs["base_compile_command"][
-		"clang"] = "{path} -Wall -c -m{arch} {input} -o {output}"
+    """
+    This class contains default values and some functions.
+    """
+    nomake_version = "0.0.1"  # nomake version format describes in docs(index.md)
+    name = platform  # This is a system name. Example: "linux" or "win32"
+    out_folder = "out"  # out folder
+    src_folder = "src"  # src folder
+    obj_format = ".obj" if name == "win32" else ".o"  # object file format
+    arch = "32"  # program arch
+    cxx = "sysdefault"  # sysdefault - the default compiler, determined by the type of system
+    debug = "true"  # debug info from external program
+    linker = "cxx-default"  # recomended linker by compiler
+    pathroot = ""  # root path to folder with program, should be configured by main script
+    debug_prints = "true"  # internal program debug info
 
-	configs["base_compile_command"]["ld"] = "{path} {inputs} -o {output}"
-	configs["base_compile_command"][
-		"mslink"] = "{path} {inputs} /nologo /out:{output}"
+    @staticmethod
+    def value_correct(value: str, values: List[str]) -> None:
+        """
+        If value not in value throw an error
+        :param value: Value itself
+        :param values: List of correct values
+        """
+        if value not in values:
+            raise TypeError(f"Not correct flag value - {value}")
 
-	configs["cpu-types"] = ("native", "i386", "i486", "i586", "pentium", "lakemont", "pentium-mmx", "pentiumpro",
-							"i686", "pentium2", "pentium3", "pentium3m", "pentium-m", "pentium4", "pentium4m",
-							"presscott", "nocona", "core2", "nehalem", "westmere", "sandybridge", "ivybridge",
-							"haswell", "broadwell", "skylake", "bonnell", "silvermont", "knl", "skylake-avx512", "k6",
-							"k6-2", "k6-3", "athlon", "athlon-tbird", "athlon-4", "athlon-xp", "athlon-mp", "k8",
-							"opteron", "athlon64", "athlon-fx", "k8-sse3", "opteron-sse3", "athlon64-sse3",
-							"amdfam10", "barcelona", "bdver1", "bdver2", "bdver3", "bdver4", "znver1", "btver1",
-							"btver2", "winchip-c6", "winchip2", "c3", "c3-2", "c7", "samuel-2", "nehemiah",
-							"esther", "eden-x2", "eden-x4", "nano", "nano-1000", "nano-2000", "nano-3000", "nano-x2",
-							"nano-x4", "geode")
-	# rewritable
-	configs["cpu-type"] = "native"  # Cpu-type. Only for g++
-	configs["arch"] = "32"  # program arch
-	# default compiler. sysdefault - the default compiler,
-	configs["cxx"] = "sysdefault"
-	# determined by the type of system.
-	configs["debug"] = "true"
-	configs["vcdir"] = "nopath"
-	configs["linker"] = "cxx-default"  # recomended compiler by system
-	configs["cxx-path"] = "nopath"  # not use path
-	configs["linker-path"] = "nopath"
-	configs["pathroot"] = ""  # root path to folder with program
-	configs["debug-prints"] = "true" # internal debug info
-	configs["include-path"] = "nopath"
-	configs["lib-path"] = "nopath"
+    def __init__(self, args: List[str], pathroot: str) -> None:
+        """
+        Init the program flags.
+        """
+        self.pathroot = pathroot  # sets path to nomake root folder
+        name = ""
+        value = ""
+        for arg in args:
+            try:
+                name = arg.split("=", 1)[0].lower()  # set flag name,
+                value = arg.split("=", 1)[1].lower()  # value
+            except:  # Incorrect arg
+                if search(r"-v", arg) is None:
+                    raise TypeError(f"Failed to init arg: {arg}")
+
+            if name == "cxx":  # Sets compiler
+                self.value_correct(value, ["gcc", "clang", "msvc", "sysdefault"])
+                self.cxx = value
+            elif name == "linker":  # Sets linker
+                self.value_correct(value, ["ld", "mslink", "llvm-ld", "llvm-link", "cxx-default"])
+                self.linker = value
+            elif arg == "-v":
+                print(self.nomake_version)
+                raise BaseException("Internal Exception")
+            elif name == "arch":  # Target arch. If target arch is 64 and cxx is msvc host system should be x86-64
+                self.value_correct(value, ["64", "32"])
+                self.arch = value
+            elif name == "debug":  # external debug info. Describes in docs(NomakeBuild/BuildSystem/debug)
+                self.value_correct(value, ["true", "false"])
+                self.debug = value
+            elif name == "debug-prints":  # internal debug info. Describes in docs(NomakeBuild/BuildSystem/debug-prints)
+                self.value_correct(value, ["true", "false"])
+                self.debug_prints = value
+            else:  # If flag incorrect
+                raise TypeError(f"ARG ERROR: Ignore unkown flag {name}")
+
+        if self.cxx == "sysdefault":  # If compiler is not defined
+            if self.name == "win32":  # for Windows
+                self.cxx = "msvc"  # Visual C++
+            else:  # For Linux
+                self.cxx = "gcc"  # g++
+
+        if self.linker == "cxx-default":  # If linker is not defined
+            if self.cxx == "msvc":  # for MSVC
+                self.linker = "mslink"  # MSlink(Linker from MSVC package)
+            elif self.cxx == "clang":  # for Clang
+                if self.name == "win32":  # Windows
+                    self.linker = "llvm-link"  # I don't know why llvm-ld don't support win32 executable format
+                else:  # for Linux
+                    self.linker = "llvm-ld"
+            else:  # for G++
+                self.linker = "ld"

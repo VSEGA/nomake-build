@@ -1,0 +1,1 @@
+This folder contains docs for Nomake on English and Russian.

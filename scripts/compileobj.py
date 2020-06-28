@@ -1,118 +1,201 @@
 """
 This file contains class with all required methods to compiling nomake.
 """
-
-from scripts.checkobj import *
-from os import mkdir, rmdir, remove, walk
+import os
 from os.path import join
-from scripts.pytools.data_cmd import *
+from platform import machine
+from re import search
+from subprocess import run
+
+from scripts import moduleobj
+from scripts.baseobj import BaseObject
+from typing import List
 
 
-# Main class
-
-
-# noinspection PyInconsistentIndentation
-class CompileObject(CheckObject):
+class CompileObject(BaseObject):
     """
     Class contains compile and all superclass methods(from CheckObject, FuncObject and BaseObject).
     """
-    linker = list()
+    linker_lst: List[str] = list()  # Contains name of object files for link
 
-    def gccCompile(self, inputs, outputs):
+    def ifprint(self, msg: str) -> None:
         """
-        Compilation program with g++.
+        Print msg if self.configs["debug-prints"] == "true"
+        :param msg: itself message
         """
-        self.ifprint("Compile file with g++ {inputs} -> {outputs}")
-        execute(self.configs["debug"], self.configs["base_compile_command"]["gcc"]
-                .format(path=self.configs["cxx-path"], output=outputs, input=inputs, cputype=self.configs["cpu-type"],
-                        arch=self.configs["arch"]))
+        if self.debug_prints == "true":
+            print(msg)
 
-    def msvcCompile(self, inputs, outputs):
+    def execute(self, debug: str, command: str) -> None:
         """
-        Compilation program with msvc.
+        Execute command.
+        :param debug: if debug is "true" prints program output
+        :param command: command itself
         """
-        self.ifprint(f"Compile file with msvc {inputs} -> {outputs}")
-        execute(self.configs["debug"], self.configs["base_compile_command"]["msvc"]
-                .format(path=self.configs["cxx-path"], output=outputs,
-                	input=inputs))
+        self.ifprint(command)
+        if debug.lower() == "true":
+            run(command, check=True)
 
-    def clangCompile(self, inputs, outputs):
-        """
-        Compilation program with clang.
-        """
-        self.ifprint(f"Compile file with g++ {inputs} -> {outputs}")
-        execute(self.configs["debug"], self.configs["base_compile_command"]["clang"]
-                .format(path=self.configs["cxx-path"], output=outputs, input=inputs, cputype=self.configs["cpu-type"],
-                        arch=self.configs["arch"]))
-
-    def ldLink(self, inputs, outputs):
-        """
-        Ld linking for g++ and clang.
-        """
-        self.ifprint(f"Linking files {inputs} -> {outputs}")
-        execute(self.configs["debug"], self.configs["base_compile_command"]["ld"]
-                .format(path=self.configs["linker-path"], output=outputs, inputs=inputs))
-
-    def msLink(self, inputs, outputs):
-        """
-        Mslink linking for msvc.
-        """
-
-        self.ifprint(f"Linking files {inputs} -> {outputs}")
-        execute(self.configs["debug"], self.configs["base_compile_command"]["mslink"]
-                .format(path=self.configs["linker-path"], output=outputs, inputs=inputs))
-
-    def link(self, inputs, outputs):
-        """
-        Selct method to linking.
-        """
-        if self.configs["linker"] == "mslink":
-            self.msLink(inputs, outputs)
         else:
-            self.ldLink(inputs, outputs)
+            with open(os.devnull, "wb") as null:
+                run(command, stderr=null, stdout=null, check=True)
 
-    def compile(self, func, inps, src: str, outfold: str, objfrm: str):
+    def getSetSysArch(self) -> None:
         """
-        Compile the module
-        @param func: func to compile.(msvcCompile, gccCompile, clangCompile)
-        @param inps: Inputs files.(["main.cpp", "print.cpp"])
-        @param src: Path to src folder.("/nomake/src")
-        @param outfold: Path to out folder.("/nomake/out")
-        @param objfrm: Object file extension.(".o")
+        Get and set to configs system arch by enviroment variables.
         """
-        for i in inps:
-            func(join(src, i), join(outfold, i) + objfrm)
-            self.linker.append('"' + join(outfold, i) + objfrm + '"')
+        if machine()[3:] == "64":
+            self.arch = "64"  # x86-64
+        else:
+            self.arch = "32"  # x86
 
-    def compile_link(self, module):
+    @property
+    def getProgramFiles32(self) -> str:
+        """
+        Returns path to program Files 32
+        :return: Program Files 32 location
+        """
+        if os.getenv("ProgramFiles(x86)") is not None:  # On some computers(Example my laptop) with 64-bits Windows
+            # ProgramFiles(x86) returns None
+            return os.getenv("ProgramFiles(x86)")
+        else:
+            return os.getenv("ProgramFiles")
+
+    @property
+    def getOldVisualStudio(self) -> str:  # This function tested with VS2005
+        """
+        Gets Old(untile VS 2015) Visual Studio loaction.
+        :returns: Visual Studio location
+        """
+        for current_dir, dirs, _files in list(os.walk(self.getProgramFiles32)):
+            if search(r"Microsoft Visual Studio", current_dir) is not None:
+                for i in dirs:
+                    if search(r"VC", i) is not None:
+                        return current_dir
+
+    @property
+    def getNewVisualStudio(self) -> str:  # This function is not tested
+        """
+        Gets New(After VS 2015) Visual Studio loaction.
+        :returns: Visual Studio location
+        """
+        for current_dir, _dirs, _files in list(os.walk(self.getProgramFiles32)):
+            if search(r"Microsoft Visual Studio", current_dir) is not None:
+                if search(r"201[579]", current_dir) is not None:
+                    if search(r"Community", current_dir) is not None or \
+                            search(r"Professional", current_dir) is not None or \
+                            search(r"Enterprise", current_dir) is not None:
+                        if search(r"VC", current_dir) is not None and search(r"MSVC", current_dir) is not None:
+                            if search(r"[0-9][0-9]\.", current_dir) is not None:
+                                return current_dir
+
+    @property
+    def getVisualCpp(self) -> str:
+        """
+        Gets Visual C++ location.
+        :returns: Visual C++ location
+        """
+        try:
+            try:
+                return str(join(self.getNewVisualStudio, "VC"))
+            except TypeError:
+                return str(join(self.getOldVisualStudio, "VC"))
+        except:
+            print("ERROR: Could not get Visual Studio")
+            raise
+
+    def arch_dep_vcdir(self, bdir: str, arch: str = "32") -> str:
+        """
+        Gets path to VCDIR/bdir/amd64 (If arch is 64) or VCDIR/bdir.
+        :param bdir: name of dir
+        :param arch: Add amd64 folder if arch is 64
+        :returns: path to dir
+        """
+        if arch == "64":
+            return str(join(self.getVisualCpp, bdir, "amd64"))
+        else:
+            return str(join(self.getVisualCpp, bdir))
+
+    def link(self, inputs: List[str], outputs: str) -> None:
+        """
+        Linking the input files.
+        :param inputs: Input object files
+        :param outputs: Output file
+        """
+        if self.linker == "ld":
+            self.ifprint(f"Linking with ld: {' '.join(inputs)} -> {outputs}")
+            if self.name == "win32":
+                self.execute(self.debug, f"g++ {' '.join(inputs)} -o {outputs} -lstdc++")
+            else:
+                self.execute(self.debug, f"ld {' '.join(inputs)} -o {outputs} -lstdc++")
+        elif self.linker == "llvm-ld":
+            self.ifprint(f"Linking with llvm-ld: {' '.join(inputs)} -> {outputs}")
+            self.execute(self.debug, f"lld.ld {' '.join(inputs)} -o {outputs} -lstdc++")
+        elif self.linker == "llvm-link":
+            self.ifprint(f"Linking with llvm-link: {' '.join(inputs)} -> {outputs}")
+            self.execute(self.debug, f"lld-link {' '.join(inputs)} /out:{outputs} /debug")
+        else:
+            self.ifprint(f"Linking with mslink: {' '.join(inputs)} -> {outputs}")
+            self.execute(self.debug, f"{self.linkpath} {' '.join(inputs)} /out:{outputs} /debug /nologo")
+
+    def compile(self, inps: List[str], srcfold: str, outfold: str, objfrm: str) -> None:
+        """
+        Compile the input files.
+        :param inps: Inputs files. Example: (["main.cpp", "print.cpp"])
+        :param srcfold: Path to src folder. Example: ("/nomake/src")
+        :param outfold: Path to out folder. Example: ("/nomake/out")
+        :param objfrm: Object file extension. Example: (".o")
+        """
+        if self.cxx == "gcc":
+            for i in inps:
+                self.ifprint(f"Compiling with g++: {i} -> {i + objfrm}")
+                self.execute(self.debug, f"g++ {join(srcfold, i)} -o {join(outfold, i) + objfrm} -c -Wall -Wextra")
+                self.linker_lst.append('"' + join(outfold, i) + objfrm + '"')
+        elif self.cxx == "clang":
+            for i in inps:
+                self.ifprint(f"Compiling with clang: {i} -> {i + objfrm}")
+                self.execute(self.debug, f"clang++ {join(srcfold, i)} -o {join(outfold, i) + objfrm} -c -Wall -Wextra")
+                self.linker_lst.append('"' + join(outfold, i) + objfrm + '"')
+        else:
+            for i in inps:
+                self.ifprint(f"Compiling with msvc: {i} -> {i + objfrm}")
+                self.execute(self.debug, f"{self.clpath} {join(srcfold, i)} "
+                                         f"/Fo{join(outfold, i) + objfrm} /c /EHsc /nologo")
+                self.linker_lst.append('"' + join(outfold, i) + objfrm + '"')
+
+    def compile_link(self, module: moduleobj.Module) -> None:
         """
         Compile modules.
-		"""
+        :param module: Module for compile
+        """
+        path = self.pathroot  # program root path
+        objfrm = self.obj_format  # object format. Examples: ".obj"(on nt), ".o"(on unixs)
+        outfold = join(path, self.out_folder)
+        src = join(path, self.src_folder)
 
-        path = self.configs["pathroot"]  # program root path
-        # object format. Examples: ".obj"(on nt), ".o"(on unixs)
-        objfrm = self.configs["obj-format"]
-        outfold = join(path, self.configs["out-folder"])
-        src = join(path, self.configs["src-folder"])
+        self.linker_lst = list()
+        self.compile(module.inputs, src, outfold, objfrm)
+        self.link(self.linker_lst, '"' + join(outfold, module.output) + '"')
 
-        for _current_dir, _dirs, files in walk(outfold):
-            for f in files:
-                remove(join(outfold, f))
+    def __init__(self, args: List[str], pathroot: str) -> None:  # The init method in BaseObject non contains some
+        # functions realesd in CompileObject
+        """
+        Init the program flags.
+        """
+        super(CompileObject, self).__init__(args, pathroot)
+        self.getSetSysArch()
+        if self.cxx == "msvc":
+            self.clpath = join(self.arch_dep_vcdir('bin', self.arch), 'cl')
+        if self.linker == "mslink":
+            self.linkpath = join(self.arch_dep_vcdir('bin', self.arch), 'link')
         try:
-            rmdir(outfold)  # delete out folder
-        except:
-            mkdir(outfold)  # create out folder
-        else:
-            mkdir(outfold)  # create out folder
-
-        self.linker = list()
-        if self.configs["cxx"] == "msvc":  # compile-function for msvc
-            self.compile(self.msvcCompile, module.inputs, src, outfold, objfrm)
-
-        elif self.configs["cxx"] == "clang":  # for clang
-            self.compile(self.clangCompile, module.inputs, src, outfold, objfrm)
-        else:  # for g++
-            self.compile(self.gccCompile, module.inputs, src, outfold, objfrm)
-
-        self.link(toString(self.linker), '"' + join(outfold, module.output) + '"')
-# end of function
+            os.mkdir(join(self.pathroot, self.out_folder))
+        except (NotImplementedError, FileExistsError):
+            for _current_dir, _dirs, files in os.walk(join(self.pathroot, self.out_folder)):
+                for f in files:
+                    os.remove(join(join(self.pathroot, self.out_folder), f))
+        if self.cxx == "msvc" or self.linker == "mslink":
+            os.putenv("LIB", ";".join([self.arch_dep_vcdir("lib", self.arch),
+                                       self.arch_dep_vcdir(join("PlatformSDK", "Lib"), self.arch)]))
+            os.putenv("INCLUDE", ";".join([self.arch_dep_vcdir("include"),
+                                           self.arch_dep_vcdir(join("PlatformSDK", "Include"))]))
