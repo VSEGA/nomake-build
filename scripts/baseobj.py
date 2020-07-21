@@ -1,16 +1,24 @@
 """
 Contains BaseObject class need for compileobj.
 """
+import os
 from re import search
 from sys import platform
 from typing import List
+
+
+class InternalException(BaseException):
+    """
+    Null exception.
+    """
+    pass
 
 
 class BaseObject:
     """
     This class contains default values and some functions.
     """
-    nomake_version = "0.0.1"  # nomake version format describes in docs(index.md)
+    nomake_version = "0.0.2"  # nomake version format describes in docs(index.md)
     name = platform  # This is a system name. Example: "linux" or "win32"
     out_folder = "out"  # out folder
     src_folder = "src"  # src folder
@@ -44,8 +52,7 @@ class BaseObject:
                 name = arg.split("=", 1)[0].lower()  # set flag name,
                 value = arg.split("=", 1)[1].lower()  # value
             except:  # Incorrect arg
-                if search(r"-v", arg) is None:
-                    raise TypeError(f"Failed to init arg: {arg}")
+                pass
 
             if name == "cxx":  # Sets compiler
                 self.value_correct(value, ["gcc", "clang", "msvc", "sysdefault"])
@@ -55,7 +62,9 @@ class BaseObject:
                 self.linker = value
             elif arg == "-v":
                 print(self.nomake_version)
-                raise BaseException("Internal Exception")
+                raise InternalException("Internal Exception")
+            elif os.path.isdir(arg):
+                self.pathroot = arg
             elif name == "arch":  # Target arch. If target arch is 64 and cxx is msvc host system should be x86-64
                 self.value_correct(value, ["64", "32"])
                 self.arch = value
@@ -66,7 +75,7 @@ class BaseObject:
                 self.value_correct(value, ["true", "false"])
                 self.debug_prints = value
             else:  # If flag incorrect
-                raise TypeError(f"ARG ERROR: Ignore unkown flag {name}")
+                raise TypeError(f"ARG ERROR: Unkown flag {arg}")
 
         if self.cxx == "sysdefault":  # If compiler is not defined
             if self.name == "win32":  # for Windows
