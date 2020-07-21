@@ -1,3 +1,17 @@
+- Version 0.0.2:
+    - Print function are transported to print.cpp
+    - Docs Micro Updates
+    - Build System Updates:
+        - Now support only msvc 2015/17/19
+        - Rename error of incorect flag
+        - Fixed ignoring all errors
+    - Add Color print header(Sys/color.h) and profiles(Sys/color.cpp|no_color.cpp)
+    - Add Non Systemless functions to (Sys/sys.h|.cpp)
+    - Add NomakeApi(Base Api Functions) and NomakeSys(Internal Functions used by Api Functions) namespaces
+    - Add Base App Class(NApp.h|.cpp)
+    - Add Error code list(Api/error.h)
+    - Add Debug levels info(Api/debug.h|.cpp)
+
 - Version 0.0.1:
     - Print function are transported to print.cpp
     - Add versions indexes

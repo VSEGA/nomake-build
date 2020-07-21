@@ -1,19 +1,16 @@
-Nomake is free automation build system.
-He written on Python (install scripts) and C++ (the program itself).
-Nomake support C++ compilation by g++, clang, msvc(only for Windows users).
+Nomake is free automation build system, written on C++.
+Nomake support C++ compilation by G++, Clang, MSVC.
 
-
-Also Nomake use [MkDocs](https://www.mkdocs.org/) to generate this docs.
-## Build Nomake
-### Build with Build System
-If you build nomake with build system some functionality may not be available. 
-#### System requiments
-At first, you should check your system. Your system must be Windows or GNU/Linux, with support
-Python 3.6+ and install it. We recomended install the latest python version -
-[3.8.3](https://www.python.org/downloads/release/python-383/).
+## System requiments
+- GNU/Linux or Windows
+- Python 3.6+ (For build with Base Build System)
+- G++ or Clang with support C++11 or MSVC 2015+
 
 If your system meets these requirements, you can continue.	
+## Build Nomake
+### Build with Build System
+Select this if you don't have any Nomake build. 
+If you build nomake with build system some functionality may not be available. 
 #### Init the build 
-
 To start building write:
-`python setup.py `
+`python setup.py`
