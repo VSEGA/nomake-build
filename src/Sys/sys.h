@@ -30,5 +30,6 @@ namespace NomakeSys {
     };
     SysType getSystem();
     WinVers getOSver(); // Only for Windows, if os type is unix return unkown
+    char* getTargetDir();
     void printColorText(char* text, NomakeApi::Color bg, NomakeApi::Color fg);
 }

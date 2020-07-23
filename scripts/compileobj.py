@@ -243,7 +243,10 @@ def main(pathf: str, args: List[str]):
     """
     try:
         mobj = CompileObject(pathf, args)
-        module = moduleobj.Module(["print.cpp", "main.cpp"], "nomake" + ".exe" if mobj.name == "win32" else "")
+        module = moduleobj.Module([join("Sys", "no_color.cpp"),
+            join("Sys", "win32.cpp" if mobj.name == "win32" else "unix.cpp"),
+            join("Api", "debug.cpp"), "NApp.cpp",
+            "main.cpp"], "nomake" + ".exe" if mobj.name == "win32" else "")
         mobj.compile_link(module)
     except InternalException:
         pass
