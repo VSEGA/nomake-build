@@ -1,16 +1,18 @@
 #include "sys.h"
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
-#include <limits.h>
+#include <stdio.h> // For use printf
+#include <unistd.h> // For use getcwd
+#include <limits.h> // For use PATH_MAX
 
 namespace NomakeSys {
-    typedef NomakeApi::ErrorsCodes errors;
     typedef NomakeApi::Color clrs;
-    short getSystem() { return unix; }
-    short getOSver() { return unkown; }
+    SysType getSystem() { return SysType::unix; }
+    WinVers getOSver() { return WinVers::unkown; }
+    /*
+        Return Foreground acsii color code
 
+        background color = foreground + 10
+    */
     inline short getRealColor(clrs color) {
         switch (color)
         {
@@ -36,10 +38,10 @@ namespace NomakeSys {
         return NomakeApi::unkown;
     }
     void printColorText(char* s, clrs fg, clrs bg) {
-        printf("\033[3;%d;%dm%s\033[0m", getRealColor(bg) + 10, getRealColor(fg), s);
+        printf("\033[3;%d;%dm%s\033[0m", getRealColor(bg) + 10, getRealColor(fg), s); // bg color = fg color + 10
     }
-    char* getTargetDir() {
-        char cwd[PATH_MAX + 1];
+    char* getWorkingDir() {
+        char cwd[PATH_MAX + 1]; // buffer with end char
         getcwd(cwd, sizeof(cwd));
         return cwd;
     }

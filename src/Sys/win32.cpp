@@ -1,15 +1,14 @@
 #include "sys.h"
-#include <stdio.h>
-#include <stdlib.h>
+#include <stdio.h> // printf() and puts()
+#include <stdlib.h> // exit()
 
 #define WIN32_LEAN_AND_MEAN
-#include <VersionHelpers.h>
-#include <Windows.h>
-#include "../Api/error.h"
+#include <VersionHelpers.h> // IsWindows***OrGreater()
+#include <Windows.h> // WinApi
+#include "../Api/types.h" // NomakeApi::Color and NomakeApi::ErrorsCodes
 
 namespace NomakeSys {
     typedef short colorWin32;
-    typedef NomakeApi::ErrorsCodes errors;
     typedef NomakeApi::Color clrs;
 
     SysType getSystem() { return SysType::nt; }
@@ -37,7 +36,9 @@ namespace NomakeSys {
         }
         return WinVers::unkown;
     }
-
+    /*
+        Return Win32Api color code
+    */
     inline colorWin32 getRealColor(clrs color) {
         switch (color)
         {
@@ -60,7 +61,6 @@ namespace NomakeSys {
             case clrs::GRAY:
                 return 0x0008;
         }
-        return NomakeApi::unkown;
     }
     void printColorText(char* s, clrs fg, clrs bg) {
         HANDLE console_handle;
@@ -69,18 +69,18 @@ namespace NomakeSys {
 
         console_handle = GetStdHandle(STD_OUTPUT_HANDLE);
         if(GetConsoleScreenBufferInfo(console_handle, &buffer)) {
-            currentConsoleAttr = buffer.wAttributes;
+            currentConsoleAttr = buffer.wAttributes; // Current color
         }
         else {
-            printf("Error %d: Error get ConsoleScreenBuffer", (int) errors::Win32GetConsoleScreenBuffer);
-            exit((int) errors::Win32GetConsoleScreenBuffer);
+            printf("Error %d: Error get ConsoleScreenBuffer", (int) NomakeApi::ErrorsCodes::Win32GetConsoleScreenBuffer);
+            exit((int) NomakeApi::ErrorsCodes::Win32GetConsoleScreenBuffer);
         }
-        SetConsoleTextAttribute(console_handle, getRealColor(bg) * 16 + getRealColor(fg));
-        puts(s);
-        SetConsoleTextAttribute(console_handle, currentConsoleAttr);
+        SetConsoleTextAttribute(console_handle, getRealColor(bg) * 16 + getRealColor(fg)); // Set color
+        puts(s); // print text
+        SetConsoleTextAttribute(console_handle, currentConsoleAttr); // Return base color
     }
-    char* getTargetDir() {
-        char path[MAX_PATH];
+    char* getWorkingDir() {
+        char path[MAX_PATH + 1]; // buffer with end char
         GetCurrentDirectoryA(sizeof(path), path);
         return path;
     }

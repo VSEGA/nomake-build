@@ -1,7 +1,13 @@
+/*
+	Main File
+*/
 #include "NApp.h"
-using namespace NomakeApi;
 
+/*
+	Main Function
+*/
 int main(int argc, const char* argv[]) {
-	NApplication app = NApplication(argc, argv);
+	NomakeApi::NApplication app = NomakeApi::NApplication(argc, argv);
+	app.run();
 	return 0;
 }
