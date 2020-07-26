@@ -1,5 +1,4 @@
 - Version 0.0.2:
-    - Print function are transported to print.cpp
     - Docs Micro Updates
     - Build System Updates:
         - Now support only msvc 2015/17/19
