@@ -15,7 +15,7 @@ namespace NomakeApi {
 			/*
 				Convert string to enum FLAGS
 			*/
-			FLAGS Arg2Flag(const char* arg);
+			FLAGS Arg2Flag(const char arg[]);
 			/*
 				Set Args without constructer
 			*/

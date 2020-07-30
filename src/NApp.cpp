@@ -1,18 +1,19 @@
 #include "NApp.h" 
 #include "Api/debug.h" // debug() and DebugLevel enum
 #include "Preprocessor/fdescriptor.h" // NomakeTools::preprocessor()
+#include <string.h>
 
 namespace NomakeApi {
-FLAGS NApplication::Arg2Flag(const char* arg) {
-	if (arg == "--cxx") return FLAGS::CXX; // Set the compiler
-	else if (arg == "--target") return FLAGS::TARGET; // target machine
-	else if (arg == "--linker") return FLAGS::LINKER; // linker
-	debug(DebugLevel::ERROR, "Inccorect Arg", (int) ErrorsCodes::IncorrectArg, (char*) arg); // If anothers if-s didn't run
+FLAGS NApplication::Arg2Flag(const char arg[]) {
+	if (!strcmp(arg, "--cxx")) return FLAGS::CXX; // Set the compiler
+	else if (!strcmp(arg, "--target")) return FLAGS::TARGET; // target machine
+	else if (!strcmp(arg, "--linker")) return FLAGS::LINKER; // linker
+	debug(DebugLevel::ERROR, "Inccorect Arg", (int) ErrorsCodes::IncorrectArg, arg); // If anothers if-s didn't run
 	return FLAGS::UNKOWN; 
 }
 
 NApplication::NApplication(){
-	this->options.args = new FLAGS[]; // new dynamic memory
+	this->options.args = new FLAGS[1]; // new dynamic memory
 	this->options.args_len = 0; // len of args without file name
 }
 
@@ -31,6 +32,6 @@ void NApplication::setArgs(int argc, const char* argv[]) {
 }
 
 void NApplication::run() {
-	NomakeTools::preprocessor("NomakeScript.ns"); // Run the script
+	fclose(NomakeTools::preprocessor("NomakeScript.ns")); // Run the script
 }
 }

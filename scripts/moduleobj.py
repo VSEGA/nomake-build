@@ -1,7 +1,7 @@
 """
 This file contains one class - Module.
 """
-from typing import List
+from typing import Dict
 
 
 class Module:
@@ -9,9 +9,9 @@ class Module:
     This class - scheme for compilation and linking.
     """
     output = ""  # output file. Examples: "hello.exe"
-    inputs = list()  # source files
+    inputs = dict()  # source files
 
-    def __init__(self, inputs: List[str], output: str) -> None:  # init function
+    def __init__(self, inputs: Dict[str, str], output: str) -> None:  # init function
         """
         Set inputs and output param.
         :param inputs: Input source Files

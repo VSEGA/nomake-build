@@ -3,9 +3,9 @@
 #include "../Api/types.h" // SettingsBuffer
 using namespace NomakeApi;
 namespace NomakeTools {
-    FILE* preprocessor(char* str) {
+    FILE* preprocessor(const char* str) {
         FILE *out = tmpfile(); // Temp File
-        FILE *in = fopen(str, "r"); // Open Input File
+        FILE *in = fopen(str, "r"); // Input File
         SettingsBuffer *options; // Settings Buffer
         char buffer[2]; // char buffer[0 is char, 1 is next char]
 
@@ -17,6 +17,6 @@ namespace NomakeTools {
             fputc(comments(buffer, options), out);
         }
         fclose(in);
-        
+        return out;
     }
 }

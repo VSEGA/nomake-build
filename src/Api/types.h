@@ -14,8 +14,6 @@ enum class Color {
     MAGENTA
 };
 
-short unkown = 1;
-
 enum class ErrorsCodes {
     Win32GetConsoleScreenBuffer = 1,
     OutOfRange,

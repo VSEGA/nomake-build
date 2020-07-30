@@ -9,5 +9,5 @@ namespace NomakeSys {
     /*
         Print color Text
     */
-    void colorText(char* str, NomakeApi::Color fg, NomakeApi::Color bg = NomakeApi::Color::BLACK);
+    void colorText(const char str[], NomakeApi::Color fg, NomakeApi::Color bg = NomakeApi::Color::BLACK);
 }

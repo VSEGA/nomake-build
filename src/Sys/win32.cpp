@@ -3,7 +3,6 @@
 #include <stdlib.h> // exit()
 
 #define WIN32_LEAN_AND_MEAN
-#include <VersionHelpers.h> // IsWindows***OrGreater()
 #include <Windows.h> // WinApi
 #include "../Api/types.h" // NomakeApi::Color and NomakeApi::ErrorsCodes
 
@@ -11,31 +10,6 @@ namespace NomakeSys {
     typedef short colorWin32;
     typedef NomakeApi::Color clrs;
 
-    SysType getSystem() { return SysType::nt; }
-
-    WinVers getOSver() {
-        if (IsWindows8Point1OrGreater())
-        {
-            return WinVers::eight_point_one;
-        }
-        if (IsWindows8OrGreater())
-        {
-            return WinVers::eight;
-        }
-        if (IsWindows7OrGreater())
-        {
-            return WinVers::seven;
-        }
-        if (IsWindowsVistaOrGreater())
-        {
-            return WinVers::vista;
-        }
-        if (IsWindowsXPOrGreater())
-        {
-            return WinVers::xp;
-        }
-        return WinVers::unkown;
-    }
     /*
         Return Win32Api color code
     */
@@ -61,8 +35,9 @@ namespace NomakeSys {
             case clrs::GRAY:
                 return 0x0008;
         }
+        return 0x0007;
     }
-    void printColorText(char* s, clrs fg, clrs bg) {
+    void printColorText(const char text[], clrs bg, clrs fg) {
         HANDLE console_handle;
         CONSOLE_SCREEN_BUFFER_INFO buffer;
         WORD currentConsoleAttr;
@@ -75,12 +50,12 @@ namespace NomakeSys {
             printf("Error %d: Error get ConsoleScreenBuffer", (int) NomakeApi::ErrorsCodes::Win32GetConsoleScreenBuffer);
             exit((int) NomakeApi::ErrorsCodes::Win32GetConsoleScreenBuffer);
         }
-        SetConsoleTextAttribute(console_handle, getRealColor(bg) * 16 + getRealColor(fg)); // Set color
-        puts(s); // print text
+        SetConsoleTextAttribute(console_handle, getRealColor(fg) * 16 + getRealColor(bg)); // Set color
+        puts(text); // print text
         SetConsoleTextAttribute(console_handle, currentConsoleAttr); // Return base color
     }
     char* getWorkingDir() {
-        char path[MAX_PATH + 1]; // buffer with end char
+        char *path; // buffer
         GetCurrentDirectoryA(sizeof(path), path);
         return path;
     }

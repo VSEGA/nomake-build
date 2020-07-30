@@ -3,35 +3,9 @@
 */
 
 #pragma once
-#include "../Api/types.h" // Unkown, ErrorsCodes, Color
+#include "../Api/types.h" // ErrorsCodes, Color
 
 namespace NomakeSys {
-    /*
-        OS Types
-    */
-    enum class SysType {
-        nt,
-        unix
-    };
-    /*
-        Windows Versions
-    */
-    enum class WinVers {
-        xp,
-        vista,
-        seven,
-        eight,
-        eight_point_one,
-        unkown
-    };
-    /*
-        Return OS Type
-    */
-    SysType getSystem();
-    /*
-        Return Windows Version(if win10 return 8.1), if os type is unix or winver not xp - 10 return unkown
-    */
-    WinVers getOSver();
     /* 
         Return Working Dir
     */
@@ -41,5 +15,5 @@ namespace NomakeSys {
 
         Print Color Text
     */
-    void printColorText(char* text, NomakeApi::Color bg, NomakeApi::Color fg);
+    void printColorText(const char text[], NomakeApi::Color fg, NomakeApi::Color bg);
 }

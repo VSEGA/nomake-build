@@ -3,9 +3,9 @@
 #include <stdio.h> // To use puts
 
 namespace NomakeApi {
-    void debug(DebugLevel dbg_level, char* str, int code = 0, char* additinal_info = "") {
+    void debug(DebugLevel dbg_level, const char str[], const int code, const char additinal_info[]) {
         // buffer(buffer size is length of str + ~len of Critacal error patern + additional info len)
-        char buffer[sizeof(str) / sizeof(char) + 30 + sizeof(additinal_info) / sizeof(char)]; 
+        char *buffer; 
 
         switch (dbg_level)
         {

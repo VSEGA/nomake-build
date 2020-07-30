@@ -6,8 +6,7 @@
 
 namespace NomakeSys {
     typedef NomakeApi::Color clrs;
-    SysType getSystem() { return SysType::unix; }
-    WinVers getOSver() { return WinVers::unkown; }
+
     /*
         Return Foreground acsii color code
 
@@ -35,10 +34,10 @@ namespace NomakeSys {
             case clrs::GRAY:
                 return 90;
         }
-        return NomakeApi::unkown;
+        return 37;
     }
-    void printColorText(char* s, clrs fg, clrs bg) {
-        printf("\033[3;%d;%dm%s\033[0m", getRealColor(bg) + 10, getRealColor(fg), s); // bg color = fg color + 10
+    void printColorText(const char text[], clrs bg, clrs fg) {
+        printf("\033[3;%d;%dm%s\033[0m", getRealColor(bg) + 10, getRealColor(fg), text); // bg color = fg color + 10
     }
     char* getWorkingDir() {
         char cwd[PATH_MAX + 1]; // buffer with end char

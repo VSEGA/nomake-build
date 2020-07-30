@@ -18,5 +18,5 @@ namespace NomakeApi {
     /*
         Use this function to print text(And standart getchar/gets/scanf to get symbols)
     */
-    void debug(DebugLevel dbg_lvl, char* str, int code = 0, char* additinal_info = "");
+    void debug(DebugLevel dbg_lvl, const char str[], int code = 0, const char additinal_info[] = "");
 }

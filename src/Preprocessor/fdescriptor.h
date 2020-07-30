@@ -10,5 +10,5 @@ namespace NomakeTools {
     /*
         Start preprocessor
     */
-    FILE* preprocessor(char* str);
+    FILE* preprocessor(const char* str);
 }
