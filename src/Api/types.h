@@ -1,6 +1,23 @@
 #pragma once
+#include <string>
+using str = std::string; // String
 
-namespace NomakeApi {
+enum class LexTokensTypes{
+    ID, // ID
+    CSTART, // (
+    CEND, // )
+    FSTART, // {
+    FEND, // }
+    ASTART, // [
+    AEND // ]
+};
+
+struct LexToken
+{
+    LexTokensTypes type;
+    str id;
+};
+
 
 enum class Color {
     RED,
@@ -39,5 +56,3 @@ struct SETTINGS
     FLAGS *args;
     int args_len;
 };
-
-}

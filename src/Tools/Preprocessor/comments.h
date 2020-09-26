@@ -3,7 +3,7 @@
 */
 
 #pragma once
-#include "../Api/types.h" // SettingsBuffer
+#include "../../Api/types.h" // SettingsBuffer
 
 namespace NomakeTools {
     /*

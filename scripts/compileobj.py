@@ -259,8 +259,8 @@ def main(pathf: str, args: List[str]):
                                       "main.cpp": "main"}, "nomake" + ".exe" if mobj.name == "win32" else "")
         else:
             module = moduleobj.Module({join("Sys", "no_color.cpp"): "color",
-                                      join("Preprocessor", "fdescriptor.cpp"): "preprocessor",
-                                      join("Preprocessor", "comments.cpp"): "comments",
+                                      join("Tools", "Preprocessor", "fdescriptor.cpp"): "preprocessor",
+                                      join("Tools", "Preprocessor", "comments.cpp"): "comments",
                                       join("Sys", "win32.cpp" if mobj.name == "win32" else "unix.cpp"): "sys",
                                       join("Api", "debug.cpp"): "debug", "NApp.cpp": "NApp",
                                       "main.cpp": "main"}, "nomake" + ".exe" if mobj.name == "win32" else "")

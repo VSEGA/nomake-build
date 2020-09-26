@@ -1,6 +1,6 @@
 #include "fdescriptor.h"
 #include "comments.h" // comments()
-#include "../Api/types.h" // SettingsBuffer
+
 using namespace NomakeApi;
 namespace NomakeTools {
     FILE* preprocessor(const char* str) {

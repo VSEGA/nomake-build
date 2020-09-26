@@ -1,6 +1,6 @@
 #include "NApp.h" 
 #include "Api/debug.h" // debug() and DebugLevel enum
-#include "Preprocessor/fdescriptor.h" // NomakeTools::preprocessor()
+#include "Tools/Preprocessor/fdescriptor.h" // NomakeTools::preprocessor()
 #include <string.h>
 
 namespace NomakeApi {
