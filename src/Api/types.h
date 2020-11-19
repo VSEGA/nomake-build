@@ -1,6 +1,10 @@
 #pragma once
 #include <string>
+#include <array>
+#include <unordered_map>
+
 using str = std::string; // String
+constexpr std::array<char, 6> extrasym = {'(', ')', '[', ']', '{', '}'};
 
 enum class LexTokensTypes{
     ID, // ID

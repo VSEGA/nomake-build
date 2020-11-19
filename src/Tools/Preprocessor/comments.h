@@ -5,10 +5,8 @@
 #pragma once
 #include "../../Api/types.h" // SettingsBuffer
 
-namespace NomakeTools {
-    /*
-        Delete comments
+/*
+    Delete comments
         
-    */
-    char comments(char s[2], NomakeApi::SettingsBuffer *options);
-}
+*/
+char comments(char s[2], SettingsBuffer *options);

@@ -5,9 +5,7 @@
 #pragma once
 #include "sys.h" 
 
-namespace NomakeSys {
-    /*
-        Print color Text
-    */
-    void colorText(const char str[], NomakeApi::Color fg, NomakeApi::Color bg = NomakeApi::Color::BLACK);
-}
+/*
+    Print color Text
+*/
+void colorText(const char str[], Color fg, Color bg = Color::BLACK);

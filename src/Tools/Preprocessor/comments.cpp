@@ -1,7 +1,7 @@
 #include "comments.h"
 
 namespace NomakeTools {
-    char comments(char s[2], NomakeApi::SettingsBuffer *options) {
+    char comments(char s[2], SettingsBuffer *options) {
         if (options->single_comment_started && s[0] == '\n') { // If single comment and end line
             options->single_comment_started = false;
             return '\n';

@@ -1,14 +1,10 @@
 /*
     Main file of preprocessor
 */
-
 #pragma once
+#include <string>
 
-#include <stdio.h> // filesystem functions
-
-namespace NomakeTools {
-    /*
-        Start preprocessor
-    */
-    FILE* preprocessor(const char* str);
-}
+/*
+    Start preprocessor
+*/
+std::string preprocessor(std::string str);

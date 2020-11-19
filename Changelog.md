@@ -1,28 +1,20 @@
+# Changelog
+
 - Version 0.0.2:
-    - Docs Micro Updates
-    - Build System Updates:
-        - Now support only msvc 2015/17/19
-        - Rename error of incorect flag
-        - Fixed ignoring all errors
-    - Add Color print header(Sys/color.h) and profiles(Sys/color.cpp|no_color.cpp)
-    - Add Non Systemless functions to (Sys/sys.h|.cpp)
-    - Add NomakeApi(Base Api Functions) and NomakeSys(Internal Functions used by Api Functions) namespaces
-    - Add Base App Class(NApp.h|.cpp)
-    - Add Error code list(Api/error.h)
-    - Add Debug levels info(Api/debug.h|.cpp)
+  - Docs Micro Updates
+  - Python Scripts Updates:
+    - Now support only msvc 2015/17/19
+    - Rename error of incorect flag
+    - Fixed ignoring all errors
 
 - Version 0.0.1:
-    - Print function are transported to print.cpp
-    - Add versions indexes
-    - Docs Updates:
-        - Update Docs structure
-        - Add Russian Docs
-    - Build System Updates:
-        - Fixied linking with ld
-        - Deleted funcsobj, checkobj and pytools module
-        - Deleted dict configs in baseobj
-        - Removed cpu-types, cxx-path and linker-path option
-        - Added new linkers: llvm-ld and llvm-link 
-        - Add option -v
+  - Add versions indexes
+  - Docs Updates:
+    - Update Docs structure
+    - Python Scripts Updates:
+      - Fixied linking with ld
+      - Removed cpu-types, cxx-path and linker-path option
+      - Added new linkers: llvm-ld and llvm-link 
+      - Add option -v
 - Until version 0.0.1:
-    - Initial Release
+  - Initial Release

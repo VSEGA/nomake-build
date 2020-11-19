@@ -1,27 +1,37 @@
 #include "lexer.h"
 #include "../Api/types.h"
+#include <vector>
 #define token LexToken
 #define types LexTokensTypes
 
-namespace NomakeTools {
-    inline token getToken(char* str) {
-        if (str == '{') return token{types::};
+inline str covertToken(types type, str id) {
+    switch (type)
+    {
+    case types::ASTART:
+        return "ASTART";
+
+    default:
+        return str("ID ") + id;
     }
+}
 
+inline void saveToken(token thisToken, FILE* fin) {
 
-    FILE* lexer(FILE* fin) {
-        char *buffer = new char[1];
-        char sym;
-        int len = 0;
-        FILE* fout = tmpfile();
+}
+
+FILE* lexer(FILE* fin) {
+    str buffer;
+    char sym;
+    FILE* fout = tmpfile();
 
 
         do {
             sym = getc(fin);
-            if(sym == ' ' && len != 0) {
+            if(sym == ' ' && buffer.length() != 0) {
 
+                buffer = "";
             }
-            else if(sym == '{') {
+            else if(std::find(extrasym.begin(), extrasym.end(), sym) != extrasym.end()) {
                 if (len != 0) {
 
                 }
@@ -29,10 +39,9 @@ namespace NomakeTools {
             else {
                 buffer[len++] = sym;
             }
-        }
+            }
         while (sym != EOF);
 
-        fclose(fin);
-        return fout;
+    fclose(fin);
+    return fout;
     }
-}

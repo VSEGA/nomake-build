@@ -2,6 +2,4 @@
 
 #include <stdio.h>
 
-namespace NomakeTools {
-    FILE* lexer(FILE* fin);
-}
+FILE* lexer(FILE* fin);

@@ -1,7 +1,5 @@
 #include "color.h"
 
-namespace NomakeSys {
-    void colorText(const char str[], NomakeApi::Color fg, NomakeApi::Color bg) {
-        NomakeSys::printColorText(str, fg, bg);
-    }
+void colorText(const char str[], Color fg, Color bg) {
+    printColorText(str, fg, bg);
 }
