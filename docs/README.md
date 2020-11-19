@@ -1,1 +1,5 @@
-This folder contains docs for Nomake on English and Russian.
+# Readme
+
+## This folder contains docs for Nomake
+
+## To build docs use [mkdocs](mkdocs.ru)

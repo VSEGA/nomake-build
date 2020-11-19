@@ -3,10 +3,13 @@ This file contains class with all required methods to compiling nomake.
 """
 import os
 from os.path import join
-from platform import machine
+from platform import machine, system
 from re import search
 from subprocess import run
-from typing import List
+from typing import List, Dict
+
+if system() == "Windows":
+    import winreg
 
 from scripts import moduleobj
 from scripts.baseobj import BaseObject, InternalException
@@ -89,39 +92,28 @@ class CompileObject(BaseObject):
                             if search(r"[0-9][0-9]\.", current_dir) is not None:
                                 return current_dir
 
-    def getWindowsKits(self, ver: str) -> str:
+    @staticmethod
+    def getVerDir(dir_path: str) -> str:
         """
-        Gets Windows Kits loaction.
-        :param ver: Win Kit version
-        :returns: Windows Kits location
+        Return dir_path/version
+        :param dir_path: dir
         """
-        return join(self.getProgramFiles32, "Windows Kits", ver)
-
-    def getKitsVerPath(self, dir_path: str, ver: str) -> str:
-        """
-        Gets Win Kits location/dir_path/10.******/
-        :param dir_path: name of dir
-        :param ver: Win Kit version
-        :return: path to distanation location
-        """
-        for current_dir, dirs, _ in list(os.walk(join(self.getWindowsKits(ver), dir_path))):
+        for current_dir, dirs, _files in os.walk(dir_path):
             return join(current_dir, dirs[0])
 
-    def arch_dep_winkit(self, dir_path: str, ver: str = "10", arch: str = "None", crt: str = "ucrt") -> str:
+    def arch_dep_winkit(self, dir_path: str, arch: str = "64", crt: str = "ucrt") -> str:
         """
         Comabinate paths.
         :param dir_path: $dir_path$
-        :param arch: Add x86 or x64 or None
-        :param ver: Win Kit version
+        :param arch: Add x86 or x64
         :param crt: Crt folder
-        :returns: Path %WinKitLoaction%/$dir_path$/x86 or x64
+        :returns: Path $dir_path$/10.**.***/crt/x86 or x64
         """
+
         if arch == "64":
-            return join(self.getKitsVerPath(dir_path, ver), crt, "x64")
-        elif arch == "32":
-            return join(self.getKitsVerPath(dir_path, ver), crt, "x86")
+            return join(self.getVerDir(dir_path), crt, "x64")
         else:
-            return join(self.getKitsVerPath(dir_path, ver), crt)
+            return join(self.getVerDir(dir_path), crt, "x86")
 
     @property
     def getVisualCpp(self) -> str:
@@ -172,30 +164,32 @@ class CompileObject(BaseObject):
             self.ifprint(f"Linking with mslink: {' '.join(inputs)} -> {outputs}")
             self.execute(self.debug, f"{self.linkpath} {' '.join(inputs)} /out:{outputs} /debug /nologo")
 
-    def compile(self, inps: List[str], srcfold: str, outfold: str, objfrm: str) -> None:
+    def compile(self, inps: Dict[str, str], srcfold: str, outfold: str, objfrm: str) -> None:
         """
         Compile the input files.
-        :param inps: Inputs files. Example: (["main.cpp", "print.cpp"])
+        :param inps: In/Out files. Example: ({"main.cpp" : "main.cpp", "print.cpp" : "print.cpp"})
         :param srcfold: Path to src folder. Example: ("/nomake/src")
         :param outfold: Path to out folder. Example: ("/nomake/out")
         :param objfrm: Object file extension. Example: (".o")
         """
         if self.cxx == "gcc":
             for i in inps:
-                self.ifprint(f"Compiling with g++: {i} -> {i + objfrm}")
-                self.execute(self.debug, f"g++ {join(srcfold, i)} -o {join(outfold, i) + objfrm} -c -Wall -Wextra")
-                self.linker_lst.append('"' + join(outfold, i) + objfrm + '"')
+                self.ifprint(f"Compiling with g++: {join(srcfold, i)} -> {join(outfold, inps[i]) + objfrm}")
+                self.execute(self.debug, f"g++ {join(srcfold, i)} -o "
+                                         f"{join(outfold, inps[i]) + objfrm} -c -Wall -Wextra")
+                self.linker_lst.append('"' + join(outfold, inps[i]) + objfrm + '"')
         elif self.cxx == "clang":
             for i in inps:
-                self.ifprint(f"Compiling with clang: {i} -> {i + objfrm}")
-                self.execute(self.debug, f"clang++ {join(srcfold, i)} -o {join(outfold, i) + objfrm} -c -Wall -Wextra")
-                self.linker_lst.append('"' + join(outfold, i) + objfrm + '"')
+                self.ifprint(f"Compiling with clang: {join(srcfold, i)} -> {join(outfold, inps[i]) + objfrm}")
+                self.execute(self.debug, f"clang++ {join(srcfold, i)} -o "
+                                         f"{join(outfold, inps[i]) + objfrm} -c -Wall -Wextra")
+                self.linker_lst.append('"' + join(outfold, inps[i]) + objfrm + '"')
         else:
             for i in inps:
-                self.ifprint(f"Compiling with msvc: {i} -> {i + objfrm}")
+                self.ifprint(f"Compiling with msvc: {join(srcfold, i)} -> {join(outfold, inps[i]) + objfrm}")
                 self.execute(self.debug, f"{self.clpath} {join(srcfold, i)} "
-                                         f"/Fo{join(outfold, i) + objfrm} /c /EHsc /nologo")
-                self.linker_lst.append('"' + join(outfold, i) + objfrm + '"')
+                                         f"/Fo{join(outfold, inps[i]) + objfrm} /c /EHsc /nologo")
+                self.linker_lst.append('"' + join(outfold, inps[i]) + objfrm + '"')
 
     def compile_link(self, module: moduleobj.Module) -> None:
         """
@@ -217,6 +211,7 @@ class CompileObject(BaseObject):
         Init the program flags.
         """
         super(CompileObject, self).__init__(args, pathroot)
+
         self.getSetSysArch()
         self.vscpp = self.getVisualCpp
         if self.cxx == "msvc":
@@ -229,12 +224,19 @@ class CompileObject(BaseObject):
             for _current_dir, _dirs, files in os.walk(join(self.pathroot, self.out_folder)):
                 for f in files:
                     os.remove(join(join(self.pathroot, self.out_folder), f))
-        if self.cxx == "msvc" or self.linker == "mslink":
-            os.putenv("LIB", ";".join([self.arch_dep_vcdir("lib", self.arch),
-                                       self.arch_dep_winkit("Lib", arch=self.arch),
-                                       self.arch_dep_winkit("Lib", arch=self.arch, ver="8.1", crt="um")]))
-            os.putenv("INCLUDE", ";".join([self.arch_dep_vcdir("include"), self.arch_dep_winkit("Include"),
-                                           self.arch_dep_winkit("Include", ver="8.1", crt="um")]))
+        if self.name == "win32":
+            key = winreg.OpenKey(winreg.HKEY_LOCAL_MACHINE, "SOFTWARE\\Microsoft\\Windows Kits\\Installed Roots")
+            kit10 = winreg.QueryValueEx(key, "KitsRoot10")[0]
+            kit81 = winreg.QueryValueEx(key, "KitsRoot81")[0]
+            kit8 = winreg.QueryValueEx(key, "KitsRoot")[0]
+            winreg.CloseKey(key)
+            os.putenv("LIB", ";".join([self.arch_dep_vcdir("lib", arch=self.arch),
+                                       self.arch_dep_winkit(join(kit10, "Lib"), arch=self.arch),
+                                       self.arch_dep_winkit(join(kit81, "Lib"), arch=self.arch, crt="um")]))
+            os.putenv("INCLUDE", ";".join([join(self.getVerDir(join(kit10, "Include")), "ucrt"),
+                                           join(kit81, "Include", "um"),
+                                           join(kit81, "Include", "shared"),
+                                           join(self.getVisualCpp, "include")]))
 
 
 def main(pathf: str, args: List[str]):
@@ -242,8 +244,26 @@ def main(pathf: str, args: List[str]):
     Main Function.
     """
     try:
-        mobj = CompileObject(pathf, args)
-        module = moduleobj.Module(["print.cpp", "main.cpp"], "nomake" + ".exe" if mobj.name == "win32" else "")
+        mobj = CompileObject(args, pathf)
+        inp = ""
+        while(inp.lower() != "yes" and inp.lower() != "no"):
+            print("Use Color: Yes/No")
+            inp = input()
+        
+        if inp.lower() == "yes":
+            module = moduleobj.Module({join("Sys", "color.cpp"): "color",
+                                      join("Preprocessor", "fdescriptor.cpp"): "preprocessor",
+                                      join("Preprocessor", "comments.cpp"): "comments",
+                                      join("Sys", "win32.cpp" if mobj.name == "win32" else "unix.cpp"): "sys",
+                                      join("Api", "debug.cpp"): "debug", "NApp.cpp": "NApp",
+                                      "main.cpp": "main"}, "nomake" + ".exe" if mobj.name == "win32" else "")
+        else:
+            module = moduleobj.Module({join("Sys", "no_color.cpp"): "color",
+                                      join("Tools", "Preprocessor", "fdescriptor.cpp"): "preprocessor",
+                                      join("Tools", "Preprocessor", "comments.cpp"): "comments",
+                                      join("Sys", "win32.cpp" if mobj.name == "win32" else "unix.cpp"): "sys",
+                                      join("Api", "debug.cpp"): "debug", "NApp.cpp": "NApp",
+                                      "main.cpp": "main"}, "nomake" + ".exe" if mobj.name == "win32" else "")
         mobj.compile_link(module)
     except InternalException:
         pass

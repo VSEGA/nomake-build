@@ -1,27 +1,30 @@
 #include "debug.h"
-#include "../Sys/color.h"
-#include <stdio.h>
-using namespace NomakeSys;
-namespace NomakeApi {
-    void debug(DebugLevel dbg_level, char* str, int code = 0) {
-        char buffer[sizeof(str) + 25];
-        switch (dbg_level)
-        {
-        case DebugLevel::INFO:
-            puts(str);
-            return;
-        case DebugLevel::WARING:
-            sprintf(buffer, "WARING : %s", str);
-            colorText(buffer, Color::YELLOW);
-            return;
-        case DebugLevel::ERROR:
-            sprintf(buffer, "ERROR %d: %s", code, str);
-            colorText(buffer, Color::MAGENTA);
-            return;
-        case DebugLevel::CRITICAL_ERROR:
-            sprintf(buffer, "CRITICAL ERROR %d: %s", code, str);
-            colorText(buffer, Color::RED);
-            return;
-        }
+#include "../Sys/color.h" // colorText()
+#include <iostream>
+
+void debug(DebugLevel dbg_level, const char str[], const int code, const char additinal_info[]) {
+    // buffer(buffer size is length of str + ~len of Critacal error patern + additional info len)
+    char *buffer; 
+
+    switch (dbg_level)
+    {
+    case DebugLevel::INFO: // Non color
+        std::cout << str;
+        return;
+
+    case DebugLevel::WARING: // Yellow color
+        sprintf(buffer, "WARING : %s %s", str, additinal_info); // Formating string to buffer
+        colorText(buffer, Color::YELLOW); // print formated str from buffer
+        return;
+
+    case DebugLevel::ERROR: // Magenta 
+        sprintf(buffer, "ERROR %d: %s %s", code, str, additinal_info); 
+        colorText(buffer, Color::MAGENTA);
+        return;
+
+    case DebugLevel::CRITICAL_ERROR: // Red
+        sprintf(buffer, "CRITICAL ERROR %d: %s %s", code, str, additinal_info);
+        colorText(buffer, Color::RED);
+        return;
     }
 }

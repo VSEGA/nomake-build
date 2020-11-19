@@ -1,6 +1,11 @@
-#pragma once
-#include "sys.h"
+/*
+    Color Text profile
+*/
 
-namespace NomakeSys {
-    void colorText(char* str, NomakeApi::Color fg, NomakeApi::Color bg = NomakeApi::Color::BLACK);
-}
+#pragma once
+#include "sys.h" 
+
+/*
+    Print color Text
+*/
+void colorText(const char str[], Color fg, Color bg = Color::BLACK);

@@ -1,8 +1,6 @@
 """
 Contains BaseObject class need for compileobj.
 """
-import os
-from re import search
 from sys import platform
 from typing import List
 
@@ -27,7 +25,7 @@ class BaseObject:
     cxx = "sysdefault"  # sysdefault - the default compiler, determined by the type of system
     debug = "true"  # debug info from external program
     linker = "cxx-default"  # recomended linker by compiler
-    pathroot = ""  # root path to folder with program, should be configured by main script
+    pathroot = ""  # root path to folder with program
     debug_prints = "true"  # internal program debug info
 
     @staticmethod
@@ -63,8 +61,6 @@ class BaseObject:
             elif arg == "-v":
                 print(self.nomake_version)
                 raise InternalException("Internal Exception")
-            elif os.path.isdir(arg):
-                self.pathroot = arg
             elif name == "arch":  # Target arch. If target arch is 64 and cxx is msvc host system should be x86-64
                 self.value_correct(value, ["64", "32"])
                 self.arch = value
@@ -75,7 +71,7 @@ class BaseObject:
                 self.value_correct(value, ["true", "false"])
                 self.debug_prints = value
             else:  # If flag incorrect
-                raise TypeError(f"ARG ERROR: Unkown flag {arg}")
+                print(f"WARING: Unkown flag {arg}")
 
         if self.cxx == "sysdefault":  # If compiler is not defined
             if self.name == "win32":  # for Windows
