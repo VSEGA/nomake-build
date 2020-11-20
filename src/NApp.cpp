@@ -3,7 +3,7 @@
 #include "Tools/Preprocessor/fdescriptor.h" // NomakeTools::preprocessor()
 #include <string.h>
 
-namespace NomakeApi {
+
 FLAGS NApplication::Arg2Flag(const char arg[]) {
 	if (!strcmp(arg, "--cxx")) return FLAGS::CXX; // Set the compiler
 	else if (!strcmp(arg, "--target")) return FLAGS::TARGET; // target machine
@@ -32,6 +32,5 @@ void NApplication::setArgs(int argc, const char* argv[]) {
 }
 
 void NApplication::run() {
-	fclose(NomakeTools::preprocessor("NomakeScript.ns")); // Run the script
-}
+	fclose(preprocessor("NomakeScript.ns")); // Run the script
 }

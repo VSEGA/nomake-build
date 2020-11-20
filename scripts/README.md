@@ -1,3 +1,0 @@
-# Readme
-
-This folder contains Basic Build System Scripts

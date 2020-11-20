@@ -3,8 +3,7 @@
 
 void preprocessor(std::string str) {
     SettingsBuffer *options; // Settings Buffer
-    ++str.begin();
-    for(char i: str) {
+    for(auto it = str.cbegin()) {
         buffer[0] = buffer[1];
         buffer[1] = fgetc(in);
         fputc(comments(buffer, options), out);
