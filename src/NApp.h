@@ -4,8 +4,7 @@
 #pragma once
 #include "Api/types.h" // For use FLAGS, SETTINGS ENUMS, ErrorsCodes
 
-namespace NomakeApi {
-	class NApplication {
+class NApplication {
 		protected:
 			/*
 				Contains args
@@ -33,4 +32,3 @@ namespace NomakeApi {
 			*/
 			void run();
 	};
-}
