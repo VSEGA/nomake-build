@@ -3,8 +3,8 @@
 
 AC_PREREQ([2.69])
 AC_INIT([nomake], [0.0.1], [tupjnin@gmail.com])
-AC_CONFIG_SRCDIR([src/])
-AC_CONFIG_HEADERS([src/])
+AC_CONFIG_SRCDIR([src/NApp.h])
+AC_CONFIG_HEADERS([config.h])
 
 # Checks for programs.
 AC_PROG_CXX
@@ -23,5 +23,10 @@ AC_C_INLINE
 # Checks for library functions.
 AC_CHECK_FUNCS([getcwd])
 
-AC_CONFIG_FILES([Makefile])
+AC_CONFIG_FILES([Makefile
+                 src/Api/Makefile
+                 src/Makefile
+                 src/Sys/Makefile
+                 src/Tools/Makefile
+                 src/Tools/Preprocessor/Makefile])
 AC_OUTPUT
