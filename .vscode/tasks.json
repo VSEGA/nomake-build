@@ -12,8 +12,8 @@
                 "kind": "build",
                 "isDefault": true
             }
-        }
-    ], [
+        },
+
         {
             "label": "Python Compile MSVC",
             "type": "shell",
@@ -27,5 +27,4 @@
             }
         }
     ]
-}
 }
