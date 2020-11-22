@@ -1,3 +1,4 @@
 out/*
 *.pyc
 .idea/*
+VSProj/Release/*
