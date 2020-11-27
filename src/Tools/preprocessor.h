@@ -3,8 +3,9 @@
 */
 #pragma once
 #include <string>
+#include "../Api/types.h"
 
 /*
     Start preprocessor
 */
-std::string preprocessor(std::string str);
+str preprocessor(str &in);

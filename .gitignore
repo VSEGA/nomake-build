@@ -1,5 +1,6 @@
 out/*
 *.pyc
-setup.bat
 .idea/*
-.vscode/*
+VSProj/Release/*
+VSProj/.vs/*
+VSProj/x64/*

@@ -1,5 +1,9 @@
 #pragma once
 
+#include "../Api/types.h"
 #include <stdio.h>
 
-FILE* lexer(FILE* fin);
+/*
+	Main function
+*/
+str lexer(str in);

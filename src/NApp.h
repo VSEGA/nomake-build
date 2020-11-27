@@ -2,20 +2,18 @@
 	Base Application Class 
 */
 #pragma once
+#define _CRT_SECURE_NO_WARNINGS
 #include "Api/types.h" // For use FLAGS, SETTINGS ENUMS, ErrorsCodes
+#include <vector>
 
-namespace NomakeApi {
-	class NApplication {
+class NApplication {
 		protected:
-			/*
-				Contains args
-			*/
-			SETTINGS options;
+			std::vector<FLAGS> args; // Args
 		public:
 			/*
 				Convert string to enum FLAGS
 			*/
-			FLAGS Arg2Flag(const char arg[]);
+			FLAGS Arg2Flag(const char *arg);
 			/*
 				Set Args without constructer
 			*/
@@ -32,5 +30,4 @@ namespace NomakeApi {
 				Run the Nomake!
 			*/
 			void run();
-	};
-}
+};

@@ -7,7 +7,6 @@
 #include "../Api/types.h" // Color and ErrorsCodes
 
 typedef short colorWin32;
-typedef Color clrs;
 
 /*
     Return Win32Api color code
@@ -53,8 +52,9 @@ void printColorText(const char text[], clrs bg, clrs fg) {
     puts(text); // print text
     SetConsoleTextAttribute(console_handle, currentConsoleAttr); // Return base color
 }
+
 char* getWorkingDir() {
-    char *path; // buffer
+    char* path = (char*)""; // buffer
     GetCurrentDirectoryA(sizeof(path), path);
     return path;
 }
