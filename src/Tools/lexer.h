@@ -6,4 +6,4 @@
 /*
 	Main function
 */
-str lexer(str &in);
+str lexer(str in);

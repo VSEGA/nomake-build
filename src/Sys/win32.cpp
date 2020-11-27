@@ -54,7 +54,7 @@ void printColorText(const char text[], clrs bg, clrs fg) {
 }
 
 char* getWorkingDir() {
-    char *path; // buffer
+    char* path = (char*)""; // buffer
     GetCurrentDirectoryA(sizeof(path), path);
     return path;
 }

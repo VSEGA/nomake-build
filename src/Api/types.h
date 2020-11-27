@@ -33,9 +33,9 @@ enum class ErrorsCodes {
 /*
     NPreprocessor internal flags
 */
-static struct SettingsBuffer {
-    bool multi_comment_started = false;
-    bool single_comment_started = false;
+struct SettingsBuffer {
+    bool multi_comment_started;
+    bool single_comment_started;
 };
 
 /*

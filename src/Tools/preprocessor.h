@@ -8,4 +8,4 @@
 /*
     Start preprocessor
 */
-str preprocessor(str in);
+str preprocessor(str &in);

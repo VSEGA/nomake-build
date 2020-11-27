@@ -3,3 +3,4 @@ out/*
 .idea/*
 VSProj/Release/*
 VSProj/.vs/*
+VSProj/x64/*

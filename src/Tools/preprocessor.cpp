@@ -1,7 +1,7 @@
 #include "preprocessor.h"
 
-std::string preprocessor(str in) {
-    SettingsBuffer options; // Settings Buffer
+std::string preprocessor(str &in) {
+    SettingsBuffer options = { false, false };
     str out;
     std::string::const_iterator it = in.cbegin();
     ++it;

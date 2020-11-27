@@ -24,7 +24,7 @@ str convertToken(char sym) {
     }
 }
 
-str lexer(str &in) {
+str lexer(str in) {
     str out;
     str buffer;
     for(auto it = in.cbegin(); it != in.cend(); it++) {

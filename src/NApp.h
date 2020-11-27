@@ -2,10 +2,11 @@
 	Base Application Class 
 */
 #pragma once
+#define _CRT_SECURE_NO_WARNINGS
 #include "Api/types.h" // For use FLAGS, SETTINGS ENUMS, ErrorsCodes
 #include <vector>
 
-static class NApplication {
+class NApplication {
 		protected:
 			std::vector<FLAGS> args; // Args
 		public:
@@ -29,4 +30,4 @@ static class NApplication {
 				Run the Nomake!
 			*/
 			void run();
-	};
+};
