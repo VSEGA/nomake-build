@@ -2,7 +2,6 @@
 	Main File
 */
 #include "NApp.h"
-#include <string.h>
 
 /*
 	Main Function
