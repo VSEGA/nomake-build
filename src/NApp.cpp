@@ -9,7 +9,7 @@ FLAGS NApplication::Arg2Flag(const char* arg) {
 	if (!strcmp(arg, "--cxx")) return FLAGS::CXX; // Set the compiler
 	else if (!strcmp(arg, "--target")) return FLAGS::TARGET; // target machine
 	else if (!strcmp(arg, "--linker")) return FLAGS::LINKER; // linker
-	Debug::print(DebugLevel::ERROR, "Inccorect Arg", (int) ErrorsCodes::IncorrectArg, arg); // If anothers if-s didn't run
+	print(DebugLevel::ERROR, "Inccorect Arg", (int) ErrorsCodes::IncorrectArg, arg); // If anothers if-s didn't run
 	return FLAGS::UNKOWN;
 }
 
