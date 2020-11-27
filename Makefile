@@ -8,7 +8,7 @@ clean:
 	rm -rf out/
 	mkdir out
 preprocessor: 
-	$(CC) $(CFLAGS) src/Tools/Preprocessor/comments.cpp src/Tools/Preprocessor/fdescriptor.cpp -o out/preprocessor.o
+	$(CC) $(CFLAGS) src/Tools/preprocessor.cpp -o out/preprocessor.o
 tools: 
 	$(CC) $(CFLAGS) src/Tools/lexer.cpp -o out/lexer.o
 api: 

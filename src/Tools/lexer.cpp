@@ -1,47 +1,50 @@
 #include "lexer.h"
 #include "../Api/types.h"
-#include <vector>
-#define token LexToken
-#define types LexTokensTypes
 
-inline str covertToken(types type, str id) {
-    switch (type)
+/*
+    Conevrting sym to lexem
+*/
+str convertToken(char sym) {
+    switch (sym)
     {
-    case types::ASTART:
+    case '[':
         return "ASTART";
-
+    case ']':
+        return "AEND";
+    case '}':
+        return "FEND";
+    case '{':
+        return "FSTART";
+    case ')':
+        return "CEND";
+    case '(':
+        return "CSTART";
     default:
-        return str("ID ") + id;
+        return "";
     }
 }
 
-inline void saveToken(token thisToken, FILE* fin) {
-
-}
-
-FILE* lexer(FILE* fin) {
+str lexer(str &in) {
+    str out;
     str buffer;
-    char sym;
-    FILE* fout = tmpfile();
-
-
-        do {
-            sym = getc(fin);
-            if(sym == ' ' && buffer.length() != 0) {
-
+    for(auto it = in.cbegin(); it != in.cend(); it++) {
+        if(*it == ' ' && buffer.length() != 0) {
+            out += str("ID ") + buffer;
+            buffer = "";
+        }
+        else if(std::find(extrasym.cbegin(), extrasym.cend(), *it) != extrasym.cend()) {
+            if (buffer.length() != 0) {
+                out += str("ID ") + buffer + "\n" + convertToken(*it) + "\n";
                 buffer = "";
             }
-            else if(std::find(extrasym.begin(), extrasym.end(), sym) != extrasym.end()) {
-                if (len != 0) {
-
-                }
-            }
             else {
-                buffer[len++] = sym;
+                out += convertToken(*it) + "\n";
+                buffer = "";
             }
-            }
-        while (sym != EOF);
-
-    fclose(fin);
-    return fout;
+        }
+        else {
+            buffer += *it;
+        }
+        }
+    return out;
     }

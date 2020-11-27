@@ -4,8 +4,9 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "Python Compile",
+            "label": "Build with make",
             "type": "shell",
+<<<<<<< Updated upstream
             "command": "start 'win.bat' -Wait",
             "problemMatcher": [],
             "group": {
@@ -20,6 +21,9 @@
             "windows": {
                 "command": "python setup.py"
             },
+=======
+            "command": "make",
+>>>>>>> Stashed changes
             "problemMatcher": [],
             "group": {
                 "kind": "build",

@@ -3,18 +3,16 @@
 */
 #pragma once
 #include "Api/types.h" // For use FLAGS, SETTINGS ENUMS, ErrorsCodes
+#include <vector>
 
-class NApplication {
+static class NApplication {
 		protected:
-			/*
-				Contains args
-			*/
-			SETTINGS options;
+			std::vector<FLAGS> args; // Args
 		public:
 			/*
 				Convert string to enum FLAGS
 			*/
-			FLAGS Arg2Flag(const char arg[]);
+			FLAGS Arg2Flag(const char *arg);
 			/*
 				Set Args without constructer
 			*/

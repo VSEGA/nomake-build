@@ -7,7 +7,7 @@
 	Main Function
 */
 int main(int argc, const char* argv[]) {
-	NomakeApi::NApplication app = NomakeApi::NApplication(argc, argv);
+	NApplication app(argc, argv);
 	app.run();
 	return 0;
 }

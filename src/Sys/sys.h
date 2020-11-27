@@ -1,17 +1,17 @@
 /*
-    Non systemless functions
+    Systemed functions
 */
 
 #pragma once
 #include "../Api/types.h" // ErrorsCodes, Color
-
+typedef Color clrs;
 /* 
     Return Working Dir
 */
 char* getWorkingDir();
 /* 
-    DON'T USE THIS, USE colorText FROM color.h!
+    DON'T USE THIS, USE debug FROM Api/debug.h/cpp!
 
-    Print Color Text
+    Print Force Color Text
 */
-void printColorText(const char text[], Color fg, Color bg);
+void printColorText(const char text[], clrs bg, clrs fg);

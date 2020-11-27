@@ -17,4 +17,10 @@ enum class DebugLevel{
 	Use this function to print text(And standart getchar/gets/scanf to get symbols)
 */
 
-void debug(DebugLevel dbg_lvl, CChArr str, int code = 0, CChArr additinal_info = "");
+class Debug
+{
+private:
+	static char *buffer; // Formatting buffer
+public:
+	static void print(DebugLevel dbg_lvl, str out, int code = 0, str additinal_info = "");
+};

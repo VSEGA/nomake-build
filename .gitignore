@@ -2,3 +2,4 @@ out/*
 *.pyc
 .idea/*
 VSProj/Release/*
+VSProj/.vs/*

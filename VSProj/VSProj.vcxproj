@@ -18,6 +18,24 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\src\Api\debug.h" />
+    <ClInclude Include="..\src\Api\types.h" />
+    <ClInclude Include="..\src\NApp.h" />
+    <ClInclude Include="..\src\Sys\color.h" />
+    <ClInclude Include="..\src\Sys\sys.h" />
+    <ClInclude Include="..\src\Tools\lexer.h" />
+    <ClInclude Include="..\src\Tools\preprocessor.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\src\Api\debug.cpp" />
+    <ClCompile Include="..\src\main.cpp" />
+    <ClCompile Include="..\src\NApp.cpp" />
+    <ClCompile Include="..\src\Sys\color.cpp" />
+    <ClCompile Include="..\src\Sys\win32.cpp" />
+    <ClCompile Include="..\src\Tools\lexer.cpp" />
+    <ClCompile Include="..\src\Tools\preprocessor.cpp" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
@@ -138,27 +156,6 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <ClCompile Include="..\src\Api\debug.cpp" />
-    <ClCompile Include="..\src\main.cpp" />
-    <ClCompile Include="..\src\NApp.cpp" />
-    <ClCompile Include="..\src\Sys\color.cpp" />
-    <ClCompile Include="..\src\Sys\no_color.cpp" />
-    <ClCompile Include="..\src\Sys\win32.cpp" />
-    <ClCompile Include="..\src\Tools\lexer.cpp" />
-    <ClCompile Include="..\src\Tools\Preprocessor\comments.cpp" />
-    <ClCompile Include="..\src\Tools\Preprocessor\fdescriptor.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="..\src\Api\debug.h" />
-    <ClInclude Include="..\src\Api\types.h" />
-    <ClInclude Include="..\src\NApp.h" />
-    <ClInclude Include="..\src\Sys\color.h" />
-    <ClInclude Include="..\src\Sys\sys.h" />
-    <ClInclude Include="..\src\Tools\lexer.h" />
-    <ClInclude Include="..\src\Tools\Preprocessor\comments.h" />
-    <ClInclude Include="..\src\Tools\Preprocessor\fdescriptor.h" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
