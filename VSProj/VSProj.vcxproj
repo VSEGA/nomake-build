@@ -24,8 +24,7 @@
     <ClInclude Include="..\src\NApp.h" />
     <ClInclude Include="..\src\Sys\color.h" />
     <ClInclude Include="..\src\Sys\sys.h" />
-    <ClInclude Include="..\src\Tools\lexer.h" />
-    <ClInclude Include="..\src\Tools\preprocessor.h" />
+    <ClInclude Include="..\src\Tools\tools.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\Api\debug.cpp" />
@@ -34,7 +33,13 @@
     <ClCompile Include="..\src\Sys\color.cpp" />
     <ClCompile Include="..\src\Sys\win32.cpp" />
     <ClCompile Include="..\src\Tools\lexer.cpp" />
+    <ClCompile Include="..\src\Tools\parser.cpp" />
     <ClCompile Include="..\src\Tools\preprocessor.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\NomakeLexer.nc" />
+    <None Include="..\NomakePreproc.nc" />
+    <None Include="..\NomakeScript.ns" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

@@ -12,6 +12,12 @@
     <Filter Include="Файлы ресурсов">
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+      <SourceControlFiles>False</SourceControlFiles>
+    </Filter>
+    <Filter Include="External">
+      <UniqueIdentifier>{b2829f5f-b9cc-4d43-a0d9-407eb3e58559}</UniqueIdentifier>
+      <Extensions>
+      </Extensions>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -30,10 +36,7 @@
     <ClInclude Include="..\src\Sys\sys.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Tools\lexer.h">
-      <Filter>Файлы заголовков</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\Tools\preprocessor.h">
+    <ClInclude Include="..\src\Tools\tools.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
   </ItemGroup>
@@ -59,5 +62,19 @@
     <ClCompile Include="..\src\Tools\preprocessor.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\Tools\parser.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\NomakeLexer.nc">
+      <Filter>External</Filter>
+    </None>
+    <None Include="..\NomakePreproc.nc">
+      <Filter>External</Filter>
+    </None>
+    <None Include="..\NomakeScript.ns">
+      <Filter>External</Filter>
+    </None>
   </ItemGroup>
 </Project>

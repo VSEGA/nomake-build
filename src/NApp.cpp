@@ -1,8 +1,7 @@
 #include "NApp.h" 
 #include "Api/debug.h" // Debug class and DebugLevel enum
-#include "Tools/preprocessor.h" // preprocessor()
 #include <string.h>
-#include "Tools/lexer.h" // lexer()
+#include "Tools/tools.h"
 
 
 FLAGS NApplication::Arg2Flag(const char* arg) {

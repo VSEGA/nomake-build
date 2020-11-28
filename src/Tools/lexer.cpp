@@ -1,4 +1,4 @@
-#include "lexer.h"
+#include "tools.h"
 #include "../Api/types.h"
 
 /*
@@ -8,19 +8,45 @@ str convertToken(char sym) {
     switch (sym)
     {
     case '[':
-        return "ASTART";
+        return "SSTART";
     case ']':
-        return "AEND";
+        return "SEND  ";
     case '}':
-        return "FEND";
+        return "FEND  ";
     case '{':
         return "FSTART";
     case ')':
-        return "CEND";
+        return "CEND  ";
     case '(':
         return "CSTART";
+    case ';':
+        return "ENDLIN";
+    case '.':
+        return "POINT ";
+    case '+':
+        return "PLUS  ";
+    case '-':
+        return "MINUS ";
+    case '*':
+        return "MULTIP";
+    case '/':
+        return "DIVISN";
+    case '%':
+        return "PERCEN";
+    case '=':
+        return "EQUSET";
+    case '!':
+        return "NOT   ";
+    case '<':
+        return "SMALL ";
+    case '>':
+        return "BIG   ";
+    case '&':
+        return "AND   ";
+    case '|':
+        return "OR    ";
     default:
-        return "";
+        return "      ";
     }
 }
 
@@ -29,12 +55,12 @@ str lexer(str in) {
     str buffer;
     for(auto it = in.cbegin(); it != in.cend(); it++) {
         if(*it == ' ' && buffer.length() != 0) {
-            out += str("ID ") + buffer;
+            out += str("ID    ") + buffer + "\n";
             buffer = "";
         }
         else if(std::find(extrasym.cbegin(), extrasym.cend(), *it) != extrasym.cend()) {
             if (buffer.length() != 0) {
-                out += str("ID ") + buffer + "\n" + convertToken(*it) + "\n";
+                out += str("ID    ") + buffer + "\n" + convertToken(*it) + "\n";
                 buffer = "";
             }
             else {

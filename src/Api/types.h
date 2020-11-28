@@ -3,7 +3,7 @@
 #include <array>
 
 using str = std::string; // String
-constexpr std::array<char, 6> extrasym = {'(', ')', '[', ']', '{', '}'}; // Sym which seperate ids in lexer
+constexpr std::array<char, 19> extrasym = { '(', ')', '[', ']', '{', '}', ';', '.', '+', '-', '*', '/', '%', '=', '!', '<', '>', '&', '|'}; // Sym which seperate ids in lexer
 
 /*
     Colors
