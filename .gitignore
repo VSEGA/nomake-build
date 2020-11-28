@@ -4,3 +4,5 @@ out/*
 VSProj/Release/*
 VSProj/.vs/*
 VSProj/x64/*
+NomakeLexer.nc
+NomakePreproc.nc

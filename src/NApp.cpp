@@ -29,11 +29,27 @@ void NApplication::setArgs(int argc, const char* argv[]) {
 
 void NApplication::run() {
 	FILE *f = fopen("NomakeScript.ns", "r"); // Open the file
-	str in; // File buffer
+	str inpreproc; // File buffer
+	str outpreproc;
+	str outlexer;
 	char ch = fgetc(f); // Sym buffer
 	while(ch != EOF) { // Read file
-		in += ch;
+		inpreproc += ch;
 		ch = fgetc(f);
 	}
-	lexer(preprocessor(in)); // Start program
+	fclose(f);
+
+	outpreproc = preprocessor(inpreproc);
+	f = fopen("NomakePreproc.nc", "w");
+	for(int i = 0; i < outpreproc.length(); i++) {
+		fputc(outpreproc[i], f);
+	}
+	fclose(f);
+
+	outlexer = lexer(outpreproc);
+	f = fopen("NomakeLexer.nc", "w");
+	for (int i = 0; i < outlexer.length(); i++) {
+		fputc(outlexer[i], f);
+	}
+	fclose(f);
 }
