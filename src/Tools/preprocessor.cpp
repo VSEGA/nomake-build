@@ -1,25 +1,31 @@
 #include "preprocessor.h"
 
-std::string preprocessor(str &in) {
-    SettingsBuffer options = { false, false };
+str preprocessor(str &in) {
+    SettingsBuffer options;
+    options.multi_comment_started = false;
+    options.single_comment_started = false;
     str out;
-    std::string::const_iterator it = in.cbegin();
-    ++it;
-    while(it != in.cend()) {
-        if (options.single_comment_started && *(it - 1) == '\n') { // If single comment and end line
+    in += ' ';
+    for (long i = 0; i < in.length() - 1; i++) {
+        if (options.single_comment_started && in[i] == '\n') { // If single comment and end line
             options.single_comment_started = false;
             out += '\n';
+            continue;
         }
-        else if (!options.single_comment_started && *(it - 1) == '/' && *it == '/') { // set single comment
+        else if (!options.single_comment_started && in[i] == '/' && in[i + 1] == '/') { // set single comment
             options.single_comment_started = true;
+            continue;
         }
-        else if (!options.multi_comment_started && *(it - 1) == "/"[0] && *it == '*') { // set multi comment
+        else if (!options.multi_comment_started && in[i] == "/"[0] && in[i + 1] == '*') { // set multi comment
             options.multi_comment_started = true;
+            continue;
         }
-        else if (options.multi_comment_started && *(it - 1) == '*' && *it == '/') { // unset multi comment 
+        else if (options.multi_comment_started && in[i] == '*' && in[i + 1] == '/') { // unset multi comment 
             options.multi_comment_started = false;
+            i++;
+            continue;
         }
-        ++it;
+        out += in[i];
     }
     return out;
 }
