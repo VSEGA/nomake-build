@@ -14,10 +14,12 @@ str preprocessor(str &in) {
         }
         else if (!options.single_comment_started && in[i] == '/' && in[i + 1] == '/') { // set single comment
             options.single_comment_started = true;
+            i++;
             continue;
         }
         else if (!options.multi_comment_started && in[i] == "/"[0] && in[i + 1] == '*') { // set multi comment
             options.multi_comment_started = true;
+            i++;
             continue;
         }
         else if (options.multi_comment_started && in[i] == '*' && in[i + 1] == '/') { // unset multi comment 
@@ -25,6 +27,7 @@ str preprocessor(str &in) {
             i++;
             continue;
         }
+        if (options.multi_comment_started || options.single_comment_started) continue;
         out += in[i];
     }
     return out;

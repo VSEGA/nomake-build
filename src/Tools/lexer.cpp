@@ -43,7 +43,9 @@ str lexer(str in) {
             }
         }
         else {
-            buffer += *it;
+            if (*it != '\n') {
+                buffer += *it;
+            }
         }
         }
     return out;
