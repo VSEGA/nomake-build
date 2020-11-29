@@ -3,7 +3,7 @@
 */
 #pragma once
 #define _CRT_SECURE_NO_WARNINGS
-#include "Api/types.h" // For use FLAGS, SETTINGS ENUMS, ErrorsCodes
+#include "Sys/types.h" // For use FLAGS, SETTINGS ENUMS, ErrorsCodes
 #include <vector>
 
 class NApplication {

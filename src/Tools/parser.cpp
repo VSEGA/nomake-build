@@ -1,6 +1,5 @@
 #include "tools.h"
 #include <vector>
-#include <string.h>
 
 using line = std::vector<element>;
 
@@ -24,8 +23,8 @@ str parser(str& in) {
 			ln.push_back(element{"ID", buffer});
 			++i;
 		}
-		else {
-
+		else if (in[i], in[i + 1], in[i + 2], in[i + 3], in[i + 4], in[i + 5] == 'E', 'N', 'D', 'L', 'I', 'N') {
+			
 		}
 	}
 

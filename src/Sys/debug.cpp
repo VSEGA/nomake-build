@@ -1,5 +1,5 @@
 #include "debug.h"
-#include "../Sys/color.h" // colorText()
+#include "color.h" // colorText()
 #include <stdio.h>
 #include <string.h>
 

@@ -1,5 +1,5 @@
 #include "NApp.h" 
-#include "Api/debug.h" // Debug class and DebugLevel enum
+#include "Sys/debug.h" // Debug class and DebugLevel enum
 #include <string.h>
 #include "Tools/tools.h"
 
