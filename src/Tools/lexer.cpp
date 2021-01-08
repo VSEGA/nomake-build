@@ -1,5 +1,5 @@
 #include "tools.h"
-#include "../Api/types.h"
+#include "../Sys/types.h"
 
 /*
     Conevrting sym to lexem
@@ -50,7 +50,7 @@ str convertToken(char sym) {
     }
 }
 
-str lexer(str in) {
+str lexer(str in) noexcept{
     str out;
     str buffer;
     for(auto it = in.cbegin(); it != in.cend(); it++) {

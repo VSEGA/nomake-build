@@ -3,9 +3,8 @@
 #include <stdio.h>
 #include <string.h>
 
-char* _bufferptr; // Formatting buffer
 void print(DebugLevel dbg_lvl, str out, int code, str additinal_info) {
-    // buffer(buffer size is length of str + ~len of Critacal error patern + additional info len)
+    char* _bufferptr = new char[]; // Formatting buffer
     switch (dbg_lvl)
     {
     case DebugLevel::INFO: // Non color

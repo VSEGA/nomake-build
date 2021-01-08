@@ -1,50 +1,67 @@
 #pragma once
 #include <string>
 #include <array>
+#include <unordered_map>
+// Types of IDs objects
+#define func_t 1
+#define class_t 2
+#define var_t 3
 
-using str = std::string; // String
-constexpr std::array<char, 19> extrasym = { '(', ')', '[', ']', '{', '}', ';', '.', '+', '-', '*', '/', '%', '=', '!', '<', '>', '&', '|'}; // Sym which seperate ids in lexer
+#define str std::string
+
+constexpr std::array<char, 19> extrasym = { '(', ')', 
+'[', ']', 
+'{', '}', 
+';', '.', 
+'+', '-', '*', '/', '%', 
+'=', '!', '<', '>', '&', '|'}; // Sym which seperate ids in lexer
+const std::unordered_map<char, unsigned short> level = {
+	{'+', 1},
+	{'-', 1},
+	{'*', 2},
+	{'/', 2}
+};
+
 
 /*
-    Colors
+	This enum is using for print func in debug.h/cpp
 */
 enum class Color {
-    RED,
-    GREEN,
-    WHITE,
-    YELLOW,
-    LIGHT_BLUE,
-    BLUE,
-    GRAY,
-    BLACK,
-    MAGENTA
+	RED,
+	GREEN,
+	WHITE,
+	YELLOW,
+	LIGHT_BLUE,
+	BLUE,
+	GRAY,
+	BLACK,
+	MAGENTA
 };
 
 /*
-    Errors
+	Errors codes
 */
-enum class ErrorsCodes {
-    Win32GetConsoleScreenBuffer = 1,
-    OutOfRange,
-    NotFoundItem,
-    IncorrectArg
+enum ErrorsCodes {
+	Win32GetConsoleScreenBuffer = 1,
+	NotFoundId,
+	IncorrectArg
 };
 
 /*
-    NPreprocessor internal flags
+	Preprocessor internal flags
 */
 struct SettingsBuffer {
-    bool multi_comment_started;
-    bool single_comment_started;
+	bool multi_comment_started;
+	bool single_comment_started;
 };
 
 /*
-    Internal command line args
+	Internal command line args
 */
 enum class FLAGS
 {	
 	CXX,
 	LINKER,
 	TARGET,
-    UNKOWN
+	UNKOWN
 };

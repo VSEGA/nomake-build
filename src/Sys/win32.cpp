@@ -45,8 +45,8 @@ void printColorText(const char text[], clrs bg, clrs fg) {
         currentConsoleAttr = buffer.wAttributes; // Current color
     }
     else {
-        printf("Error %d: Error get ConsoleScreenBuffer", (int) ErrorsCodes::Win32GetConsoleScreenBuffer);
-        exit((int) ErrorsCodes::Win32GetConsoleScreenBuffer);
+        printf("Error %d: Error get ConsoleScreenBuffer", (int) Win32GetConsoleScreenBuffer);
+        exit((int) Win32GetConsoleScreenBuffer);
     }
     SetConsoleTextAttribute(console_handle, getRealColor(fg) * 16 + getRealColor(bg)); // Set color
     puts(text); // print text

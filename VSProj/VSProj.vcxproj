@@ -19,18 +19,19 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\src\Api\debug.h" />
-    <ClInclude Include="..\src\Api\types.h" />
     <ClInclude Include="..\src\NApp.h" />
     <ClInclude Include="..\src\Sys\color.h" />
+    <ClInclude Include="..\src\Sys\debug.h" />
+    <ClInclude Include="..\src\Sys\Stack.h" />
     <ClInclude Include="..\src\Sys\sys.h" />
+    <ClInclude Include="..\src\Sys\types.h" />
     <ClInclude Include="..\src\Tools\tools.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\src\Api\debug.cpp" />
     <ClCompile Include="..\src\main.cpp" />
     <ClCompile Include="..\src\NApp.cpp" />
     <ClCompile Include="..\src\Sys\color.cpp" />
+    <ClCompile Include="..\src\Sys\debug.cpp" />
     <ClCompile Include="..\src\Sys\win32.cpp" />
     <ClCompile Include="..\src\Tools\lexer.cpp" />
     <ClCompile Include="..\src\Tools\parser.cpp" />
